@@ -1,0 +1,17 @@
+---
+title: "Projects"
+description: "A list of projects developed or being developed by me."
+listing:
+  contents:
+    - "*/index.*md"
+  sort: "date desc"
+  type: table
+  categories: true
+  sort-ui: false
+  filter-ui: false
+page-layout: full
+title-block-banner: true
+
+---
+
+
