@@ -5,9 +5,8 @@ website:
   title: "AB Paxtor Garcia"
   navbar:
     left:
-      - href: index.qmd
-        text: Home
-      - about.qmd
+      - projects/index.qmd
+      - walkthroughs/index.qmd
     right:
       - icon: github
         href: https://github.com/paxabacus
