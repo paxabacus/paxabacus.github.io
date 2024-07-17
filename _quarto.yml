@@ -15,7 +15,9 @@ website:
     
 format:
   html:
-    theme: zephyr
+    theme: 
+      light: zephyr
+      dark: superhero
     css: styles.css
     toc: true
 
