@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Guides and Tutorials on Topics I’ve done.">
+<meta name="dcterms.date" content="2025-02-26">
 
-<title>Walkthroughs – AB Paxtor Garcia</title>
+<title>CSUN Global Protect – AB Paxtor Garcia</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -24,26 +24,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b53751a350365c71b6c909e95f209ed1.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-811f389b8a180219181a0c464ee78b6b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-4c1b98738ec0874d9dae211e7ab2f05d.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-b53751a350365c71b6c909e95f209ed1.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-811f389b8a180219181a0c464ee78b6b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-4c1b98738ec0874d9dae211e7ab2f05d.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -71,77 +69,19 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-author',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+  <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">AB Paxtor Garcia</span>
     </a>
   </div>
@@ -152,11 +92,11 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../projects/index.html"> 
+    <a class="nav-link" href="../../projects/index.html"> 
 <span class="menu-text">Projects</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../walkthroughs/index.html" aria-current="page"> 
+    <a class="nav-link" href="../../walkthroughs/index.html"> 
 <span class="menu-text">Walkthroughs</span></a>
   </li>  
 </ul>
@@ -180,77 +120,145 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<header id="title-block-header" class="quarto-title-block default page-columns page-full">
-  <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title">Walkthroughs</h1>
-                  <div>
-        <div class="description">
-          Guides and Tutorials on Topics I’ve done.
-        </div>
-      </div>
-                </div>
-  </div>
-    
-  
-  <div class="quarto-title-meta column-page-left">
-
-      
-    
-      
-    </div>
-    
-  
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Z3VpZGVz">guides <span class="quarto-category-count">(1)</span></div></div></div>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#installing" id="toc-installing" class="nav-link active" data-scroll-target="#installing">Installing</a>
+  <ul class="collapse">
+  <li><a href="#software-download" id="toc-software-download" class="nav-link" data-scroll-target="#software-download">Software Download</a>
+  <ul class="collapse">
+  <li><a href="#mac-windows-and-linux" id="toc-mac-windows-and-linux" class="nav-link" data-scroll-target="#mac-windows-and-linux">Mac, Windows, and Linux</a></li>
+  <li><a href="#phones" id="toc-phones" class="nav-link" data-scroll-target="#phones">Phones</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#using-gp" id="toc-using-gp" class="nav-link" data-scroll-target="#using-gp">Using GP</a>
+  <ul class="collapse">
+  <li><a href="#windows" id="toc-windows" class="nav-link" data-scroll-target="#windows">Windows</a></li>
+  </ul></li>
+  <li><a href="#useful-links" id="toc-useful-links" class="nav-link" data-scroll-target="#useful-links">Useful Links</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">CSUN Global Protect</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">guides</div>
+  </div>
+  </div>
 
 
 
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">February 26, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
 
 
+</header>
 
 
-
-
-<div class="quarto-listing quarto-listing-container-table" id="listing-listing">
-<table class="quarto-listing-table table">
-<thead>
-<tr>
-<th>
-Date
-</th>
-<th>
-Title
-</th>
-<th>
-Author
-</th>
-</tr>
-</thead>
-<tbody class="list">
-<tr data-index="0" data-categories="Z3VpZGVz" data-listing-date-sort="1740528000000" data-listing-file-modified-sort="1740601181993" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="94" data-listing-title-sort="CSUN Global Protect" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">Feb 26, 2025</span>
-</td>
-<td>
-<a href="../walkthroughs/CSUN-GP/index.html" class="title listing-title">CSUN Global Protect</a>
-</td>
-<td>
-<span class="listing-author">&nbsp;</span>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="listing-no-matching d-none">
-No matching items
+<section id="installing" class="level1">
+<h1>Installing</h1>
+<section id="software-download" class="level2">
+<h2 class="anchored" data-anchor-id="software-download">Software Download</h2>
+<section id="mac-windows-and-linux" class="level3">
+<h3 class="anchored" data-anchor-id="mac-windows-and-linux">Mac, Windows, and Linux</h3>
+<p><a href="https://w2.csun.edu/it/software-services/software/software-downloads">CSUN Software Downloads</a></p>
+<p>Just run the default options, next, next, next, and then install.</p>
+</section>
+<section id="phones" class="level3">
+<h3 class="anchored" data-anchor-id="phones">Phones</h3>
+<p><a href="https://apps.apple.com/us/app/globalprotect/id1400555706">IPhone Global Protect</a> <a href="https://play.google.com/store/apps/details?id=com.paloaltonetworks.globalprotect&amp;hl=en_US&amp;pli=1">Android Global Protect</a></p>
+<p>Just run default options, and install</p>
+</section>
+</section>
+</section>
+<section id="using-gp" class="level1">
+<h1>Using GP</h1>
+<section id="windows" class="level2">
+<h2 class="anchored" data-anchor-id="windows">Windows</h2>
+<blockquote class="blockquote">
+<p>I am on windows</p>
+</blockquote>
+<ol type="1">
+<li>open the app</li>
+</ol>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/GP_Icon.png" class="img-fluid figure-img"></p>
+<figcaption>Global Protect Icon</figcaption>
+</figure>
 </div>
-</div></main> <!-- /main -->
+<ol start="2" type="1">
+<li>open the minize apps on your task, and click the small icon</li>
+</ol>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/GP_Mini.png" class="img-fluid figure-img"></p>
+<figcaption>Global Protect Minimized</figcaption>
+</figure>
+</div>
+<ol start="3" type="1">
+<li>use the following domain <code>vpn.csun.edu</code></li>
+</ol>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/CSUN_GP_Portal.png" class="img-fluid figure-img"></p>
+<figcaption>CSUN GP Portal</figcaption>
+</figure>
+</div>
+<ol start="4" type="1">
+<li>log into your portal</li>
+</ol>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/CSUN_portal.png" class="img-fluid figure-img"></p>
+<figcaption>CSUN Portal Login</figcaption>
+</figure>
+</div>
+<ol start="5" type="1">
+<li>you are now connected</li>
+</ol>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/gp_done.png" class="img-fluid figure-img"></p>
+<figcaption>Connected</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="useful-links" class="level1">
+<h1>Useful Links</h1>
+<ul>
+<li><a href="https://w2.csun.edu/it/software-services/software/software-downloads">CSUN Software Downloads</a></li>
+<li><a href="https://apps.apple.com/us/app/globalprotect/id1400555706">IPhone Global Protect</a></li>
+<li><a href="https://play.google.com/store/apps/details?id=com.paloaltonetworks.globalprotect&amp;hl=en_US&amp;pli=1">Android Global Protect</a></li>
+<li><a href="https://w2.csun.edu/it/software-services/services/globalprotect">Global Protect on Multiple Devices</a></li>
+<li><a href="https://w2.csun.edu/it/software-services/services/network-wireless/remote-access-vpn">CSUN’s guide on the VPN</a></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

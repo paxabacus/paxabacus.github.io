@@ -5,6 +5,8 @@
   },
   {
     "listing": "/walkthroughs/index.html",
-    "items": []
+    "items": [
+      "/walkthroughs/CSUN-GP/index.html"
+    ]
   }
 ]
