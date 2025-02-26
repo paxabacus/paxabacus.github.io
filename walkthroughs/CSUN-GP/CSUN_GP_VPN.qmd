@@ -1,1 +1,67 @@
+---
+title: "CSUN Global Protect"
+date: "02-26-2025"
+categories: [guides]
+format: 
+  html:
+    code-fold: true
+    code-summary: "Show the code"
+    code-block-background: true
+execute:
+  freeze: true
+---
+
+# Installing
+
+## Software Download
+
+### Mac, Windows, and Linux
+[CSUN Software Downloads](https://w2.csun.edu/it/software-services/software/software-downloads)
+
+Just run the default options, next, next, next, and then install.
+
+### Phones
+
+[IPhone Global Protect](https://apps.apple.com/us/app/globalprotect/id1400555706)
+[Android Global Protect](https://play.google.com/store/apps/details?id=com.paloaltonetworks.globalprotect&hl=en_US&pli=1)
+
+Just run default options, and install
+
+# Using GP
+
+## Windows 
+> I am on windows
+
+1. open the app
+
+![Global Protect Icon](./images/GP_Icon.png)
+
+2. open the minize apps on your task, and click the small icon
+
+![Global Protect Minimized](./images/GP_Mini.png)
+
+3. use the following domain `vpn.csun.edu`
+
+![CSUN GP Portal](./images/CSUN_GP_Portal.png)
+
+4. log into your portal
+
+![CSUN Portal Login](./images/CSUN_portal.png)
+
+5. you are now connected
+
+![Connected](./images/gp_done.png)
+
+# Useful Links
+
+- [CSUN Software Downloads](https://w2.csun.edu/it/software-services/software/software-downloads)
+- [IPhone Global Protect](https://apps.apple.com/us/app/globalprotect/id1400555706)
+- [Android Global Protect](https://play.google.com/store/apps/details?id=com.paloaltonetworks.globalprotect&hl=en_US&pli=1)
+- [Global Protect on Multiple Devices](https://w2.csun.edu/it/software-services/services/globalprotect)
+- [CSUN's guide on the VPN](https://w2.csun.edu/it/software-services/services/network-wireless/remote-access-vpn)
+
+
+
+
+
 
