@@ -44,12 +44,15 @@ And the puppet server is only to be installed onto the server node/machine.
 1. Running Apt
 
 ```
-sudo apt install puppet-master -y	
+wget https://apt.puppetlabs.com/puppet8-release-jammy.deb
+sudo dpkg -i puppet8-release-jammy.deb
+sudo apt update
+sudo apt install puppetserver
 ```
 
 2. Editing Puppet Memory (if needed)
 
-The `-Xmsx1g` is where you can edit, `1g` simply means 1 GB of memory
+The `-Xms1g` and `=Xmx1g` is where you can edit, `1g` simply means 1 GB of memory
 
 ```
 sudo hx /etc/default/puppetserver
