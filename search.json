@@ -7,39 +7,11 @@
     "text": "No matching items"
   },
   {
-    "objectID": "walkthroughs/CSUN-GP/CSUN_GP_VPN.html",
-    "href": "walkthroughs/CSUN-GP/CSUN_GP_VPN.html",
-    "title": "CSUN Global Protect",
+    "objectID": "walkthroughs/OCI-LiveLab/index.html",
+    "href": "walkthroughs/OCI-LiveLab/index.html",
+    "title": "OCI LiveLab",
     "section": "",
-    "text": "CSUN Software Downloads\nJust run the default options, next, next, next, and then install.\n\n\n\nIPhone Global Protect Android Global Protect\nJust run default options, and install"
-  },
-  {
-    "objectID": "walkthroughs/CSUN-GP/CSUN_GP_VPN.html#software-download",
-    "href": "walkthroughs/CSUN-GP/CSUN_GP_VPN.html#software-download",
-    "title": "CSUN Global Protect",
-    "section": "",
-    "text": "CSUN Software Downloads\nJust run the default options, next, next, next, and then install.\n\n\n\nIPhone Global Protect Android Global Protect\nJust run default options, and install"
-  },
-  {
-    "objectID": "walkthroughs/CSUN-GP/CSUN_GP_VPN.html#windows",
-    "href": "walkthroughs/CSUN-GP/CSUN_GP_VPN.html#windows",
-    "title": "CSUN Global Protect",
-    "section": "Windows",
-    "text": "Windows\n\nI am on windows\n\n\nopen the app\n\n\n\n\nGlobal Protect Icon\n\n\n\nopen the minize apps on your task, and click the small icon\n\n\n\n\nGlobal Protect Minimized\n\n\n\nuse the following domain vpn.csun.edu\n\n\n\n\nCSUN GP Portal\n\n\n\nlog into your portal\n\n\n\n\nCSUN Portal Login\n\n\n\nyou are now connected\n\n\n\n\nConnected"
-  },
-  {
-    "objectID": "walkthroughs/index.html",
-    "href": "walkthroughs/index.html",
-    "title": "Walkthroughs",
-    "section": "",
-    "text": "Date\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\nFeb 26, 2025\n\n\nCSUN Global Protect\n\n\n \n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "AB Paxtor Garcia",
-    "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+    "text": "SSH Keys\ncd .ssh\nssh-keygen -b 2048 -t rsa -f &lt;&lt;sshkeyname&gt;&gt;\n\n\nIAM\n\nCreated a compartment named “demo”\nCrated a domain within demo called “LiveLab”\nCreated a group within that domain called “oci-group”\ncreate user “TestUser” to be part of “oci-group”\n\n\n\nVCN\n\nCreated a VCN through wizard called “OCI_HOL_VCN”\n\n\nIP RANGE: 10.0.0.0/16, Public 10.0.1.0/24, Private 10.0.2.0/24\n\n\nCreated a Security group that allows SSH and TCP Traffic\n\n\n\nCOMPUTE\n\nCreated a Compute Instance\nUpdated Yum and installed HTTP\nConfigured Apache\n\nsudo yum install httpd -y\nsudo apachectl start\nsudo systemctl enable httpd\nsudo apachectl configtest\nsudo firewall-cmd --permanent --zone=public --add-service=http\nsudo firewall-cmd --reload\nsudo bash -c 'echo This is my Web-Server running on Oracle Cloud Infrastructure &gt;&gt; /var/www/html/index.html'\n\nSG already allowed TCP # Block Volume\nblock volume is created\ncannot attach to instance\n\n\n\nObject Storage\n\ncreated object storage\nuploaded file\nlink: link"
   },
   {
     "objectID": "walkthroughs/CSUN-GP/index.html",
@@ -58,6 +30,41 @@
   {
     "objectID": "walkthroughs/CSUN-GP/index.html#windows",
     "href": "walkthroughs/CSUN-GP/index.html#windows",
+    "title": "CSUN Global Protect",
+    "section": "Windows",
+    "text": "Windows\n\nI am on windows\n\n\nopen the app\n\n\n\n\nGlobal Protect Icon\n\n\n\nopen the minize apps on your task, and click the small icon\n\n\n\n\nGlobal Protect Minimized\n\n\n\nuse the following domain vpn.csun.edu\n\n\n\n\nCSUN GP Portal\n\n\n\nlog into your portal\n\n\n\n\nCSUN Portal Login\n\n\n\nyou are now connected\n\n\n\n\nConnected"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "AB Paxtor Garcia",
+    "section": "",
+    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+  },
+  {
+    "objectID": "walkthroughs/index.html",
+    "href": "walkthroughs/index.html",
+    "title": "Walkthroughs",
+    "section": "",
+    "text": "Date\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\nFeb 26, 2025\n\n\nCSUN Global Protect\n\n\n \n\n\n\n\nFeb 17, 2025\n\n\nOCI LiveLab\n\n\n \n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "walkthroughs/CSUN-GP/CSUN_GP_VPN.html",
+    "href": "walkthroughs/CSUN-GP/CSUN_GP_VPN.html",
+    "title": "CSUN Global Protect",
+    "section": "",
+    "text": "CSUN Software Downloads\nJust run the default options, next, next, next, and then install.\n\n\n\nIPhone Global Protect Android Global Protect\nJust run default options, and install"
+  },
+  {
+    "objectID": "walkthroughs/CSUN-GP/CSUN_GP_VPN.html#software-download",
+    "href": "walkthroughs/CSUN-GP/CSUN_GP_VPN.html#software-download",
+    "title": "CSUN Global Protect",
+    "section": "",
+    "text": "CSUN Software Downloads\nJust run the default options, next, next, next, and then install.\n\n\n\nIPhone Global Protect Android Global Protect\nJust run default options, and install"
+  },
+  {
+    "objectID": "walkthroughs/CSUN-GP/CSUN_GP_VPN.html#windows",
+    "href": "walkthroughs/CSUN-GP/CSUN_GP_VPN.html#windows",
     "title": "CSUN Global Protect",
     "section": "Windows",
     "text": "Windows\n\nI am on windows\n\n\nopen the app\n\n\n\n\nGlobal Protect Icon\n\n\n\nopen the minize apps on your task, and click the small icon\n\n\n\n\nGlobal Protect Minimized\n\n\n\nuse the following domain vpn.csun.edu\n\n\n\n\nCSUN GP Portal\n\n\n\nlog into your portal\n\n\n\n\nCSUN Portal Login\n\n\n\nyou are now connected\n\n\n\n\nConnected"
