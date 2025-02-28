@@ -47,10 +47,21 @@ sudo firewall-cmd --reload
 sudo bash -c 'echo This is my Web-Server running on Oracle Cloud Infrastructure >> /var/www/html/index.html'
 ```
 4. SG already allowed TCP
+
 # Block Volume
 
 1. block volume is created
-2. cannot attach to instance
+2. attached to instance
+3. Run iSCSI commands
+4. mount drive
+
+```
+ls -l /dev/oracleoci/oraclevd*
+sudo mkfs -t ext4 /dev/oracleoci/oraclevdb
+sudo mkdir /mnt/disk1
+sudo mount /dev/oracleoci/oraclevdb /mnt/disk1
+df -h
+```
 
 # Object Storage
 1. created object storage

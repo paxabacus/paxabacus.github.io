@@ -1,0 +1,113 @@
+---
+title: "OCI Puppet LAMP Stack"
+date: "02-17-2025"
+categories: [guides]
+format:
+  html:
+    code-fold: true
+    code-summary: "Show the code"
+    code-block-background: true
+execute:
+  freeze: true
+---
+
+# Enviroment
+
+The environment consists of 1 Server Node which is a (VM.Standard.E2.2) Shape runnning ubuntu, and the another VM called ClientNode1 Which is a VM.Standard.E2.Micro running ubuntu
+
+My LAN is 10.10.1.0/24
+
+Please ensure that port 22 and 8140 are allowed on each machine's firewall, and that both machines can reach one another (i.e. ping or traceroute)
+
+# Puppet
+## Setting up hostnames
+
+1. For the Client and Server to recognized one another, hostnames must be given on both machines.
+
+> Note: I use Helix, but nano, emacs, and vim is fine
+```
+sudo hx /etc/host	
+[insert ip] puppetserver
+[insert ip] puppetclient
+```
+
+## Installing Puppet
+
+It's safe to assume, apt has been updated and upgraded.
+
+### Puppet Server
+
+The puppet server is used as the main controller for each puppet agent/client. For instance, I am running a lamp stack config on my server, and so when I edit the config; I can push those edits remotely to each puppet agent on a machine. Further, I can also request those edits from the agent itself.
+
+And the puppet server is only to be installed onto the server node/machine.
+
+1. Running Apt
+
+```
+sudo apt install puppet-master -y	
+```
+
+2. Editing Puppet Memory (if needed)
+
+The `-Xmsx1g` is where you can edit, `1g` simply means 1 GB of memory
+
+```
+sudo hx /etc/default/puppetserver
+JAVA_ARGS="-Xms1g -Xmx1g -Djruby.logger.class=com.puppetlabs.jruby_utils.jruby.Slf4jLogger"
+```
+
+3. Service management
+
+```
+sudo systemctl start puppetserver
+sudo systemctl enable puppetserver
+sudo systemctl status puppetserver
+```
+
+### Puppet Agent
+
+Likewise, assume apt is updated and upgraded.
+
+The Puppet Agent is just the client, so only client machines/nodes need it.
+
+1. Installing via Apt
+```
+sudo apt install puppet-agent -y	
+```
+
+2. Editing Config
+```
+sudo hx /etc/puppet/puppet.conf	
+```
+
+3. Add the following to the config
+```
+[main]
+certname = puppetclient
+server = puppetserver	
+```
+
+If you gave different names to your hostnames, then make sure to follow that.
+
+4. Service Management
+```
+sudo systemctl start puppet
+sudo systemctl enable puppet
+sudo systemctl status puppet
+```
+
+## Certifcate Management
+
+On the Puppet Server Node, do the following:
+
+1. List Pending and Available Certificates
+```
+sudo /usr/bin/puppetserver ca list --all	
+```
+
+2. Sign those certs
+```
+sudo /usr/bin/puppetserver ca sign --all	
+```
+
+# LAMP Stack Configuration
