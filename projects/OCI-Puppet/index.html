@@ -204,11 +204,14 @@ ul.task-list li input[type="checkbox"] {
 <ol type="1">
 <li>Running Apt</li>
 </ol>
-<pre><code>sudo apt install puppet-master -y   </code></pre>
+<pre><code>wget https://apt.puppetlabs.com/puppet8-release-jammy.deb
+sudo dpkg -i puppet8-release-jammy.deb
+sudo apt update
+sudo apt install puppetserver</code></pre>
 <ol start="2" type="1">
 <li>Editing Puppet Memory (if needed)</li>
 </ol>
-<p>The <code>-Xmsx1g</code> is where you can edit, <code>1g</code> simply means 1 GB of memory</p>
+<p>The <code>-Xms1g</code> and <code>=Xmx1g</code> is where you can edit, <code>1g</code> simply means 1 GB of memory</p>
 <pre><code>sudo hx /etc/default/puppetserver
 JAVA_ARGS="-Xms1g -Xmx1g -Djruby.logger.class=com.puppetlabs.jruby_utils.jruby.Slf4jLogger"</code></pre>
 <ol start="3" type="1">
