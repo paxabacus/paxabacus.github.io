@@ -1,0 +1,60 @@
+---
+title: "OCI LiveLab"
+date: "02-17-2025"
+categories: [guides]
+format:
+  html:
+    code-fold: true
+    code-summary: "Show the code"
+    code-block-background: true
+execute:
+  freeze: true
+---
+
+# SSH Keys
+
+```
+cd .ssh
+ssh-keygen -b 2048 -t rsa -f <<sshkeyname>>
+```
+
+
+# IAM
+
+1. Created a compartment named "demo"
+2. Crated a domain within demo called "LiveLab"
+3. Created a group within that domain called "oci-group"
+4. create user "TestUser" to be part of "oci-group"
+
+
+# VCN
+
+1. Created a VCN through wizard called "OCI_HOL_VCN"
+-	IP RANGE: 10.0.0.0/16, Public 10.0.1.0/24, Private 10.0.2.0/24
+2. Created a Security group that allows SSH and TCP Traffic
+
+# COMPUTE
+1. Created a Compute Instance
+2. Updated Yum and installed HTTP
+3. Configured Apache
+```
+sudo yum install httpd -y
+sudo apachectl start
+sudo systemctl enable httpd
+sudo apachectl configtest
+sudo firewall-cmd --permanent --zone=public --add-service=http
+sudo firewall-cmd --reload
+sudo bash -c 'echo This is my Web-Server running on Oracle Cloud Infrastructure >> /var/www/html/index.html'
+```
+4. SG already allowed TCP
+# Block Volume
+
+1. block volume is created
+2. cannot attach to instance
+
+# Object Storage
+1. created object storage
+2. uploaded file
+3. link:
+[link](https://objectstorage.us-sanjose-1.oraclecloud.com/p/AwE-T2wX3jFKMNB1RTsybHVXxagX9umQJ2QaUaMBg_2lxC7MQDo0rgM_IYzlW3l6/n/axlnmvoxyl7h/b/Demo-Bucket/o/sample-file.txt)
+
