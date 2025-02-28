@@ -8,7 +8,7 @@
 
 <meta name="dcterms.date" content="2025-02-17">
 
-<title>OCI LiveLab – AB Paxtor Garcia</title>
+<title>OCI Puppet LAMP Stack – AB Paxtor Garcia</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -128,12 +128,18 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#ssh-keys" id="toc-ssh-keys" class="nav-link active" data-scroll-target="#ssh-keys">SSH Keys</a></li>
-  <li><a href="#iam" id="toc-iam" class="nav-link" data-scroll-target="#iam">IAM</a></li>
-  <li><a href="#vcn" id="toc-vcn" class="nav-link" data-scroll-target="#vcn">VCN</a></li>
-  <li><a href="#compute" id="toc-compute" class="nav-link" data-scroll-target="#compute">COMPUTE</a></li>
-  <li><a href="#block-volume" id="toc-block-volume" class="nav-link" data-scroll-target="#block-volume">Block Volume</a></li>
-  <li><a href="#object-storage" id="toc-object-storage" class="nav-link" data-scroll-target="#object-storage">Object Storage</a></li>
+  <li><a href="#enviroment" id="toc-enviroment" class="nav-link active" data-scroll-target="#enviroment">Enviroment</a></li>
+  <li><a href="#puppet" id="toc-puppet" class="nav-link" data-scroll-target="#puppet">Puppet</a>
+  <ul class="collapse">
+  <li><a href="#setting-up-hostnames" id="toc-setting-up-hostnames" class="nav-link" data-scroll-target="#setting-up-hostnames">Setting up hostnames</a></li>
+  <li><a href="#installing-puppet" id="toc-installing-puppet" class="nav-link" data-scroll-target="#installing-puppet">Installing Puppet</a>
+  <ul class="collapse">
+  <li><a href="#puppet-server" id="toc-puppet-server" class="nav-link" data-scroll-target="#puppet-server">Puppet Server</a></li>
+  <li><a href="#puppet-agent" id="toc-puppet-agent" class="nav-link" data-scroll-target="#puppet-agent">Puppet Agent</a></li>
+  </ul></li>
+  <li><a href="#certifcate-management" id="toc-certifcate-management" class="nav-link" data-scroll-target="#certifcate-management">Certifcate Management</a></li>
+  </ul></li>
+  <li><a href="#lamp-stack-configuration" id="toc-lamp-stack-configuration" class="nav-link" data-scroll-target="#lamp-stack-configuration">LAMP Stack Configuration</a></li>
   </ul>
 </nav>
     </div>
@@ -142,7 +148,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">OCI LiveLab</h1>
+<h1 class="title">OCI Puppet LAMP Stack</h1>
   <div class="quarto-categories">
     <div class="quarto-category">guides</div>
   </div>
@@ -168,71 +174,92 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="ssh-keys" class="level1">
-<h1>SSH Keys</h1>
-<pre><code>cd .ssh
-ssh-keygen -b 2048 -t rsa -f &lt;&lt;sshkeyname&gt;&gt;</code></pre>
+<section id="enviroment" class="level1">
+<h1>Enviroment</h1>
+<p>The environment consists of 1 Server Node which is a (VM.Standard.E2.2) Shape runnning ubuntu, and the another VM called ClientNode1 Which is a VM.Standard.E2.Micro running ubuntu</p>
+<p>My LAN is 10.10.1.0/24</p>
+<p>Please ensure that port 22 and 8140 are allowed on each machine’s firewall, and that both machines can reach one another (i.e.&nbsp;ping or traceroute)</p>
 </section>
-<section id="iam" class="level1">
-<h1>IAM</h1>
+<section id="puppet" class="level1">
+<h1>Puppet</h1>
+<section id="setting-up-hostnames" class="level2">
+<h2 class="anchored" data-anchor-id="setting-up-hostnames">Setting up hostnames</h2>
 <ol type="1">
-<li>Created a compartment named “demo”</li>
-<li>Crated a domain within demo called “LiveLab”</li>
-<li>Created a group within that domain called “oci-group”</li>
-<li>create user “TestUser” to be part of “oci-group”</li>
+<li>For the Client and Server to recognized one another, hostnames must be given on both machines.</li>
 </ol>
+<blockquote class="blockquote">
+<p>Note: I use Helix, but nano, emacs, and vim is fine</p>
+</blockquote>
+<pre><code>sudo hx /etc/host   
+[insert ip] puppetserver
+[insert ip] puppetclient</code></pre>
 </section>
-<section id="vcn" class="level1">
-<h1>VCN</h1>
+<section id="installing-puppet" class="level2">
+<h2 class="anchored" data-anchor-id="installing-puppet">Installing Puppet</h2>
+<p>It’s safe to assume, apt has been updated and upgraded.</p>
+<section id="puppet-server" class="level3">
+<h3 class="anchored" data-anchor-id="puppet-server">Puppet Server</h3>
+<p>The puppet server is used as the main controller for each puppet agent/client. For instance, I am running a lamp stack config on my server, and so when I edit the config; I can push those edits remotely to each puppet agent on a machine. Further, I can also request those edits from the agent itself.</p>
+<p>And the puppet server is only to be installed onto the server node/machine.</p>
 <ol type="1">
-<li>Created a VCN through wizard called “OCI_HOL_VCN”</li>
+<li>Running Apt</li>
 </ol>
-<ul>
-<li>IP RANGE: 10.0.0.0/16, Public 10.0.1.0/24, Private 10.0.2.0/24</li>
-</ul>
+<pre><code>sudo apt install puppet-master -y   </code></pre>
 <ol start="2" type="1">
-<li>Created a Security group that allows SSH and TCP Traffic</li>
+<li>Editing Puppet Memory (if needed)</li>
 </ol>
+<p>The <code>-Xmsx1g</code> is where you can edit, <code>1g</code> simply means 1 GB of memory</p>
+<pre><code>sudo hx /etc/default/puppetserver
+JAVA_ARGS="-Xms1g -Xmx1g -Djruby.logger.class=com.puppetlabs.jruby_utils.jruby.Slf4jLogger"</code></pre>
+<ol start="3" type="1">
+<li>Service management</li>
+</ol>
+<pre><code>sudo systemctl start puppetserver
+sudo systemctl enable puppetserver
+sudo systemctl status puppetserver</code></pre>
 </section>
-<section id="compute" class="level1">
-<h1>COMPUTE</h1>
+<section id="puppet-agent" class="level3">
+<h3 class="anchored" data-anchor-id="puppet-agent">Puppet Agent</h3>
+<p>Likewise, assume apt is updated and upgraded.</p>
+<p>The Puppet Agent is just the client, so only client machines/nodes need it.</p>
 <ol type="1">
-<li>Created a Compute Instance</li>
-<li>Updated Yum and installed HTTP</li>
-<li>Configured Apache</li>
+<li>Installing via Apt</li>
 </ol>
-<pre><code>sudo yum install httpd -y
-sudo apachectl start
-sudo systemctl enable httpd
-sudo apachectl configtest
-sudo firewall-cmd --permanent --zone=public --add-service=http
-sudo firewall-cmd --reload
-sudo bash -c 'echo This is my Web-Server running on Oracle Cloud Infrastructure &gt;&gt; /var/www/html/index.html'</code></pre>
+<pre><code>sudo apt install puppet-agent -y    </code></pre>
+<ol start="2" type="1">
+<li>Editing Config</li>
+</ol>
+<pre><code>sudo hx /etc/puppet/puppet.conf </code></pre>
+<ol start="3" type="1">
+<li>Add the following to the config</li>
+</ol>
+<pre><code>[main]
+certname = puppetclient
+server = puppetserver   </code></pre>
+<p>If you gave different names to your hostnames, then make sure to follow that.</p>
 <ol start="4" type="1">
-<li>SG already allowed TCP</li>
+<li>Service Management</li>
 </ol>
+<pre><code>sudo systemctl start puppet
+sudo systemctl enable puppet
+sudo systemctl status puppet</code></pre>
 </section>
-<section id="block-volume" class="level1">
-<h1>Block Volume</h1>
-<ol type="1">
-<li>block volume is created</li>
-<li>attached to instance</li>
-<li>Run iSCSI commands</li>
-<li>mount drive</li>
-</ol>
-<pre><code>ls -l /dev/oracleoci/oraclevd*
-sudo mkfs -t ext4 /dev/oracleoci/oraclevdb
-sudo mkdir /mnt/disk1
-sudo mount /dev/oracleoci/oraclevdb /mnt/disk1
-df -h</code></pre>
 </section>
-<section id="object-storage" class="level1">
-<h1>Object Storage</h1>
+<section id="certifcate-management" class="level2">
+<h2 class="anchored" data-anchor-id="certifcate-management">Certifcate Management</h2>
+<p>On the Puppet Server Node, do the following:</p>
 <ol type="1">
-<li>created object storage</li>
-<li>uploaded file</li>
-<li>link: <a href="https://objectstorage.us-sanjose-1.oraclecloud.com/p/AwE-T2wX3jFKMNB1RTsybHVXxagX9umQJ2QaUaMBg_2lxC7MQDo0rgM_IYzlW3l6/n/axlnmvoxyl7h/b/Demo-Bucket/o/sample-file.txt">link</a></li>
+<li>List Pending and Available Certificates</li>
 </ol>
+<pre><code>sudo /usr/bin/puppetserver ca list --all    </code></pre>
+<ol start="2" type="1">
+<li>Sign those certs</li>
+</ol>
+<pre><code>sudo /usr/bin/puppetserver ca sign --all    </code></pre>
+</section>
+</section>
+<section id="lamp-stack-configuration" class="level1">
+<h1>LAMP Stack Configuration</h1>
 
 
 </section>

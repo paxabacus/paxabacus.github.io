@@ -1,13 +1,15 @@
 [
   {
-    "listing": "/projects/index.html",
-    "items": []
-  },
-  {
     "listing": "/walkthroughs/index.html",
     "items": [
       "/walkthroughs/CSUN-GP/index.html",
       "/walkthroughs/OCI-LiveLab/index.html"
+    ]
+  },
+  {
+    "listing": "/projects/index.html",
+    "items": [
+      "/projects/OCI-Puppet/index.html"
     ]
   }
 ]

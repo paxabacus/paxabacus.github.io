@@ -1,31 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://paxabacus.github.io/projects/index.html</loc>
-    <lastmod>2025-02-28T07:45:15.351Z</lastmod>
-  </url>
-  <url>
-    <loc>https://paxabacus.github.io/walkthroughs/OCI-LiveLab/index.html</loc>
-    <lastmod>2025-02-28T07:45:15.354Z</lastmod>
-  </url>
-  <url>
-    <loc>https://paxabacus.github.io/walkthroughs/CSUN-GP/index.html</loc>
-    <lastmod>2025-02-28T07:45:15.354Z</lastmod>
-  </url>
-  <url>
-    <loc>https://paxabacus.github.io/index.html</loc>
-    <lastmod>2025-02-28T07:45:15.351Z</lastmod>
-  </url>
-  <url>
-    <loc>https://paxabacus.github.io/walkthroughs/index.html</loc>
-    <lastmod>2025-02-28T07:45:15.354Z</lastmod>
-  </url>
-  <url>
-    <loc>https://paxabacus.github.io/walkthroughs/CSUN-GP/CSUN_GP_VPN.html</loc>
-    <lastmod>2025-02-28T07:45:15.352Z</lastmod>
+    <loc>https://paxabacus.github.io/projects/OCI-Puppet/index.html</loc>
+    <lastmod>2025-02-28T08:50:04.728Z</lastmod>
   </url>
   <url>
     <loc>https://paxabacus.github.io/about.html</loc>
-    <lastmod>2025-02-28T07:45:15.351Z</lastmod>
+    <lastmod>2025-02-28T08:50:04.728Z</lastmod>
+  </url>
+  <url>
+    <loc>https://paxabacus.github.io/walkthroughs/CSUN-GP/CSUN_GP_VPN.html</loc>
+    <lastmod>2025-02-28T08:50:04.729Z</lastmod>
+  </url>
+  <url>
+    <loc>https://paxabacus.github.io/walkthroughs/index.html</loc>
+    <lastmod>2025-02-28T08:50:04.731Z</lastmod>
+  </url>
+  <url>
+    <loc>https://paxabacus.github.io/index.html</loc>
+    <lastmod>2025-02-28T08:50:04.728Z</lastmod>
+  </url>
+  <url>
+    <loc>https://paxabacus.github.io/walkthroughs/CSUN-GP/index.html</loc>
+    <lastmod>2025-02-28T08:50:04.731Z</lastmod>
+  </url>
+  <url>
+    <loc>https://paxabacus.github.io/walkthroughs/OCI-LiveLab/index.html</loc>
+    <lastmod>2025-02-28T08:50:04.731Z</lastmod>
+  </url>
+  <url>
+    <loc>https://paxabacus.github.io/projects/index.html</loc>
+    <lastmod>2025-02-28T08:50:04.728Z</lastmod>
   </url>
 </urlset>
