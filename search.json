@@ -39,14 +39,28 @@
     "href": "walkthroughs/OCI-Wazuh/index.html",
     "title": "OCI Wazuh Deployment",
     "section": "",
-    "text": "Wazuh # Deployments"
+    "text": "Wazuh"
   },
   {
     "objectID": "walkthroughs/OCI-Wazuh/index.html#what-is-wauzh",
     "href": "walkthroughs/OCI-Wazuh/index.html#what-is-wauzh",
     "title": "OCI Wazuh Deployment",
     "section": "",
-    "text": "Wazuh # Deployments"
+    "text": "Wazuh"
+  },
+  {
+    "objectID": "walkthroughs/OCI-Wazuh/index.html#deploy-with-oke",
+    "href": "walkthroughs/OCI-Wazuh/index.html#deploy-with-oke",
+    "title": "OCI Wazuh Deployment",
+    "section": "Deploy with OKE",
+    "text": "Deploy with OKE"
+  },
+  {
+    "objectID": "walkthroughs/OCI-Wazuh/index.html#deploy-with-instances",
+    "href": "walkthroughs/OCI-Wazuh/index.html#deploy-with-instances",
+    "title": "OCI Wazuh Deployment",
+    "section": "Deploy with Instances",
+    "text": "Deploy with Instances"
   },
   {
     "objectID": "projects/OCI-Puppet/index.html",
