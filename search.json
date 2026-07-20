@@ -39,14 +39,14 @@
     "href": "walkthroughs/OCI-Wazuh/index.html",
     "title": "OCI Wazuh Deployment",
     "section": "",
-    "text": "Wazuh"
+    "text": "Wazuh and OCI"
   },
   {
     "objectID": "walkthroughs/OCI-Wazuh/index.html#what-is-wauzh",
     "href": "walkthroughs/OCI-Wazuh/index.html#what-is-wauzh",
     "title": "OCI Wazuh Deployment",
-    "section": "",
-    "text": "Wazuh"
+    "section": "What is Wauzh",
+    "text": "What is Wauzh\nWazuh"
   },
   {
     "objectID": "walkthroughs/OCI-Wazuh/index.html#deploy-with-oke",
