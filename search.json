@@ -32,14 +32,7 @@
     "href": "walkthroughs/index.html",
     "title": "Walkthroughs",
     "section": "",
-    "text": "Date\n\n\n\nTitle\n\n\n\nAuthor\n\n\n\n\n\n\n\n\nFeb 26, 2025\n\n\nCSUN Global Protect\n\n\n \n\n\n\n\n\n\nFeb 17, 2025\n\n\nOCI LiveLab\n\n\n \n\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "projects/index.html",
-    "href": "projects/index.html",
-    "title": "Projects",
-    "section": "",
-    "text": "Date\n\n\n\nTitle\n\n\n\nAuthor\n\n\n\n\n\n\n\n\nFeb 17, 2025\n\n\nOCI Puppet LAMP Stack\n\n\n \n\n\n\n\n\n\nNo matching items"
+    "text": "Date\n\n\n\nTitle\n\n\n\nAuthor\n\n\n\n\n\n\n\n\nJul 20, 2026\n\n\nOCI Wazuh Deployment\n\n\n \n\n\n\n\n\n\nFeb 26, 2025\n\n\nCSUN Global Protect\n\n\n \n\n\n\n\n\n\nFeb 17, 2025\n\n\nOCI LiveLab\n\n\n \n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "projects/OCI-Puppet/index.html",
@@ -68,6 +61,13 @@
     "title": "OCI Puppet LAMP Stack",
     "section": "Certifcate Management",
     "text": "Certifcate Management\nOn the Puppet Server Node, do the following:\n\nList Pending and Available Certificates\n\nsudo /usr/bin/puppetserver ca list --all    \n\nSign those certs\n\nsudo /usr/bin/puppetserver ca sign --all"
+  },
+  {
+    "objectID": "projects/index.html",
+    "href": "projects/index.html",
+    "title": "Projects",
+    "section": "",
+    "text": "Date\n\n\n\nTitle\n\n\n\nAuthor\n\n\n\n\n\n\n\n\nFeb 17, 2025\n\n\nOCI Puppet LAMP Stack\n\n\n \n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "walkthroughs/OCI-LiveLab/index.html",
