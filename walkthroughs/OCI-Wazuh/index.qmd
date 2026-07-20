@@ -11,6 +11,8 @@ execute:
   freeze: true
 ---
 
+![Wazuh and OCI](./images/Wazuh-OCI.png)
+
 # Introduction
 
 ## What is Wauzh
