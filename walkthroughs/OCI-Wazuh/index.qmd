@@ -10,3 +10,20 @@ format:
 execute:
   freeze: true
 ---
+
+# Introduction
+
+## What is Wauzh
+
+
+[Wazuh](https://documentation.wazuh.com/current/getting-started/index.html) 
+# Deployments
+
+## Deploy with OKE
+
+
+
+## Deploy with Instances
+
+# Summary
+
