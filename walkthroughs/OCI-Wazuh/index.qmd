@@ -16,7 +16,8 @@ execute:
 ## What is Wauzh
 
 
-[Wazuh](https://documentation.wazuh.com/current/getting-started/index.html) 
+[Wazuh](https://documentation.wazuh.com/current/getting-started/index.html)
+
 # Deployments
 
 ## Deploy with OKE
