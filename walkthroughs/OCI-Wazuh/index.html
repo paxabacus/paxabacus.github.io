@@ -300,11 +300,16 @@ ul.task-list li input[type="checkbox"] {
   <ul class="collapse">
   <li><a href="#what-is-wauzh" id="toc-what-is-wauzh" class="nav-link" data-scroll-target="#what-is-wauzh">What is Wauzh</a></li>
   </ul></li>
-  <li><a href="#deployment-model" id="toc-deployment-model" class="nav-link" data-scroll-target="#deployment-model">Deployment Model</a>
+  <li><a href="#deployment" id="toc-deployment" class="nav-link" data-scroll-target="#deployment">Deployment</a>
   <ul class="collapse">
-  <li><a href="#deploy-with-oke" id="toc-deploy-with-oke" class="nav-link" data-scroll-target="#deploy-with-oke">Deploy with OKE</a></li>
-  <li><a href="#deploy-with-instances" id="toc-deploy-with-instances" class="nav-link" data-scroll-target="#deploy-with-instances">Deploy with Instances</a></li>
+  <li><a href="#deploy-with-oke" id="toc-deploy-with-oke" class="nav-link" data-scroll-target="#deploy-with-oke">Deploy with OKE</a>
+  <ul class="collapse">
+  <li><a href="#configuring-oke" id="toc-configuring-oke" class="nav-link" data-scroll-target="#configuring-oke">Configuring OKE</a></li>
+  <li><a href="#configuring-wazuh-files-for-oci" id="toc-configuring-wazuh-files-for-oci" class="nav-link" data-scroll-target="#configuring-wazuh-files-for-oci">Configuring Wazuh Files for OCI</a></li>
   </ul></li>
+  </ul></li>
+  <li><a href="#leveraging-agents" id="toc-leveraging-agents" class="nav-link" data-scroll-target="#leveraging-agents">Leveraging Agents</a></li>
+  <li><a href="#oci-logs-into-wazuh" id="toc-oci-logs-into-wazuh" class="nav-link" data-scroll-target="#oci-logs-into-wazuh">OCI Logs into Wazuh</a></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
   </ul>
 </nav>
@@ -349,10 +354,10 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
-<p>The following post aims to assist in the deployment of <a href="https://documentation.wazuh.com/current/getting-started/index.html">Wazuh</a> as a centralized SIEM for Oracle Cloud Infrastructure (OCI). Additionally, we will discuss on how to enroll compute instances and import OCI logs into the SIEM.</p>
+<p>The following post aims to assist in the deployment of <a href="https://documentation.wazuh.com/current/getting-started/index.html">Wazuh</a> as a centralized Security Information and Event Magament (SIEM) for Oracle Cloud Infrastructure (OCI) via Oracle Kubernetes Engine (OKE). Additionally, we will discuss on how to enroll compute instances and import OCI logs into the SIEM.</p>
 <section id="what-is-wauzh" class="level2">
 <h2 class="anchored" data-anchor-id="what-is-wauzh">What is Wauzh</h2>
-<p>As stated before, <a href="https://documentation.wazuh.com/current/getting-started/index.html">Wazuh</a> is a SIEM solution, and is comprised of four main components: - <a href="https://documentation.wazuh.com/current/installation-guide/wazuh-indexer/index.html">Wazuh Indexer</a> stores data and alerts that the Wazuh Server creates. - <a href="https://documentation.wazuh.com/current/installation-guide/wazuh-server/index.html">Wazuh Server</a> serves as the analytics engine which detect threats or anomalies that are collected from endpoints. - <a href="https://documentation.wazuh.com/current/installation-guide/wazuh-dashboard/index.html">Wazuh Dashboard</a> visualizes alert and data from the Wazuh Server and Indexer, and highlights where agents are deployed. - <a href="https://documentation.wazuh.com/current/installation-guide/wazuh-agent/index.html">Wazuh Agent(s)</a> deploys on endpoints to forward collected data to the Wazuh Server.</p>
+<p>As stated before, <a href="https://documentation.wazuh.com/current/getting-started/index.html">Wazuh</a> is a SIEM solution, and is comprised of four main components: * <a href="https://documentation.wazuh.com/current/installation-guide/wazuh-indexer/index.html">Wazuh Indexer</a> stores data and alerts which the Wazuh Server creates. * <a href="https://documentation.wazuh.com/current/installation-guide/wazuh-server/index.html">Wazuh Server</a> serves as the analytics engine which detect threats or anomalies that are collected from endpoints. * <a href="https://documentation.wazuh.com/current/installation-guide/wazuh-dashboard/index.html">Wazuh Dashboard</a> visualizes alert and data from the Wazuh Server and Indexer, and highlights where agents are deployed. * <a href="https://documentation.wazuh.com/current/installation-guide/wazuh-agent/index.html">Wazuh Agent(s)</a> deploys on endpoints to forward collected data to the Wazuh Server.</p>
 <p>For further visualization on how these four components work together, refer to the following diagram from Wazuh.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -362,15 +367,24 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </section>
 </section>
-<section id="deployment-model" class="level1">
-<h1>Deployment Model</h1>
-<p>Wazuh has the following deployment models:</p>
+<section id="deployment" class="level1">
+<h1>Deployment</h1>
+<p>Wazuh has multiple deployment models which can be found on its <a href="https://documentation.wazuh.com/current/installation-guide/index.html">installation page</a> and <a href="https://documentation.wazuh.com/current/deployment-options/index.html">alternative installations page</a>. For this blog, we will focus on the <a href="https://documentation.wazuh.com/current/deployment-options/deploying-with-kubernetes/index.html">Deployment on Kubernetes</a>.</p>
 <section id="deploy-with-oke" class="level2">
 <h2 class="anchored" data-anchor-id="deploy-with-oke">Deploy with OKE</h2>
+<section id="configuring-oke" class="level3">
+<h3 class="anchored" data-anchor-id="configuring-oke">Configuring OKE</h3>
 </section>
-<section id="deploy-with-instances" class="level2">
-<h2 class="anchored" data-anchor-id="deploy-with-instances">Deploy with Instances</h2>
+<section id="configuring-wazuh-files-for-oci" class="level3">
+<h3 class="anchored" data-anchor-id="configuring-wazuh-files-for-oci">Configuring Wazuh Files for OCI</h3>
 </section>
+</section>
+</section>
+<section id="leveraging-agents" class="level1">
+<h1>Leveraging Agents</h1>
+</section>
+<section id="oci-logs-into-wazuh" class="level1">
+<h1>OCI Logs into Wazuh</h1>
 </section>
 <section id="summary" class="level1">
 <h1>Summary</h1>
