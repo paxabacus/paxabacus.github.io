@@ -15,7 +15,15 @@ execute:
 
 # Introduction
 
-The following post aims to assist in the deployment of [Wazuh](https://documentation.wazuh.com/current/getting-started/index.html) as a centralized Security Information and Event Magament (SIEM) for Oracle Cloud Infrastructure (OCI) via Oracle Kubernetes Engine (OKE). Additionally, we will discuss on how to enroll compute instances and import OCI logs into the SIEM.  
+The following post aims to assist in the deployment of [Wazuh](https://documentation.wazuh.com/current/getting-started/index.html) as a centralized Security Information and Event Magament (SIEM) for Oracle Cloud Infrastructure (OCI) via a private Oracle Kubernetes Engine (OKE) cluster. Additionally, we will discuss on how to enroll compute instances and import OCI logs into the SIEM.
+
+Through this blog, we will have accomplished the following tasks:
+
+* Created a private OKE Cluster
+* Configured VCN, Subnets, and Security Lists
+* Prepared OCI Block Storage
+* Updated Wazuh Kubernetes manifest for OCI
+* Deployed and Validated Wazuh 
 
 ## What is Wauzh?
 
