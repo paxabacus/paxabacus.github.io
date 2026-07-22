@@ -21,6 +21,7 @@ The following post aims to assist in the deployment of [Wazuh](https://documenta
 
 
 As stated before, [Wazuh](https://documentation.wazuh.com/current/getting-started/index.html) is a SIEM solution, and is comprised of four main components:
+
 * [Wazuh Indexer](https://documentation.wazuh.com/current/installation-guide/wazuh-indexer/index.html) stores data and alerts which the Wazuh Server creates. 
 * [Wazuh Server](https://documentation.wazuh.com/current/installation-guide/wazuh-server/index.html) serves as the analytics engine which detect threats or anomalies that are collected from endpoints. 
 * [Wazuh Dashboard](https://documentation.wazuh.com/current/installation-guide/wazuh-dashboard/index.html) visualizes alert and data from the Wazuh Server and Indexer, and highlights where agents are deployed.
@@ -33,7 +34,9 @@ For further visualization on how these four components work together, refer to t
 
 # Deployment
 
-Wazuh has multiple deployment models which can be found on its [installation page](https://documentation.wazuh.com/current/installation-guide/index.html) and [alternative installations page](https://documentation.wazuh.com/current/deployment-options/index.html). For this blog, we will focus on the [Deployment on Kubernetes](https://documentation.wazuh.com/current/deployment-options/deploying-with-kubernetes/index.html). 
+Wazuh has multiple deployment models which can be found on its [installation page](https://documentation.wazuh.com/current/installation-guide/index.html) and [alternative installations page](https://documentation.wazuh.com/current/deployment-options/index.html).
+
+For this blog, we will focus on the [Deployment on Kubernetes](https://documentation.wazuh.com/current/deployment-options/deploying-with-kubernetes/index.html). 
 
 ## Deploy with OKE
 
