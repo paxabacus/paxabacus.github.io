@@ -1,5 +1,12 @@
 [
   {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "AB Paxtor Garcia",
+    "section": "",
+    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+  },
+  {
     "objectID": "walkthroughs/CSUN-GP/index.html",
     "href": "walkthroughs/CSUN-GP/index.html",
     "title": "CSUN Global Protect",
@@ -28,11 +35,25 @@
     "text": "Date\n\n\n\nTitle\n\n\n\nAuthor\n\n\n\n\n\n\n\n\nJul 20, 2026\n\n\nOCI Wazuh Deployment\n\n\n \n\n\n\n\n\n\nFeb 26, 2025\n\n\nCSUN Global Protect\n\n\n \n\n\n\n\n\n\nFeb 17, 2025\n\n\nOCI LiveLab\n\n\n \n\n\n\n\n\n\nNo matching items"
   },
   {
-    "objectID": "walkthroughs/OCI-LiveLab/index.html",
-    "href": "walkthroughs/OCI-LiveLab/index.html",
-    "title": "OCI LiveLab",
+    "objectID": "walkthroughs/OCI-Wazuh/index.html",
+    "href": "walkthroughs/OCI-Wazuh/index.html",
+    "title": "OCI Wazuh Deployment",
     "section": "",
-    "text": "SSH Keys\ncd .ssh\nssh-keygen -b 2048 -t rsa -f &lt;&lt;sshkeyname&gt;&gt;\n\n\nIAM\n\nCreated a compartment named “demo”\nCrated a domain within demo called “LiveLab”\nCreated a group within that domain called “oci-group”\ncreate user “TestUser” to be part of “oci-group”\n\n\n\nVCN\n\nCreated a VCN through wizard called “OCI_HOL_VCN”\n\n\nIP RANGE: 10.0.0.0/16, Public 10.0.1.0/24, Private 10.0.2.0/24\n\n\nCreated a Security group that allows SSH and TCP Traffic\n\n\n\nCOMPUTE\n\nCreated a Compute Instance\nUpdated Yum and installed HTTP\nConfigured Apache\n\nsudo yum install httpd -y\nsudo apachectl start\nsudo systemctl enable httpd\nsudo apachectl configtest\nsudo firewall-cmd --permanent --zone=public --add-service=http\nsudo firewall-cmd --reload\nsudo bash -c 'echo This is my Web-Server running on Oracle Cloud Infrastructure &gt;&gt; /var/www/html/index.html'\n\nSG already allowed TCP\n\n\n\nBlock Volume\n\nblock volume is created\nattached to instance\nRun iSCSI commands\nmount drive\n\nls -l /dev/oracleoci/oraclevd*\nsudo mkfs -t ext4 /dev/oracleoci/oraclevdb\nsudo mkdir /mnt/disk1\nsudo mount /dev/oracleoci/oraclevdb /mnt/disk1\ndf -h\n\n\nObject Storage\n\ncreated object storage\nuploaded file\nlink: link"
+    "text": "Wazuh and OCI"
+  },
+  {
+    "objectID": "walkthroughs/OCI-Wazuh/index.html#what-is-wauzh",
+    "href": "walkthroughs/OCI-Wazuh/index.html#what-is-wauzh",
+    "title": "OCI Wazuh Deployment",
+    "section": "What is Wauzh?",
+    "text": "What is Wauzh?\nAs stated before, Wazuh is a SIEM solution, and is comprised of four main components:\n\nWazuh Indexer stores data and alerts which the Wazuh Server creates.\nWazuh Server serves as the analytics engine which detect threats or anomalies that are collected from endpoints.\nWazuh Dashboard visualizes alert and data from the Wazuh Server and Indexer, and highlights where agents are deployed.\nWazuh Agent(s) deploys on endpoints to forward collected data to the Wazuh Server.\n\nFurther, all four components must be running together, otherwise Wazuh will not function correctly.\nFor further visualization on how these four components work together, refer to the following diagram from Wazuh.\n\n\n\nWazuh Architecture\n\n\nIn essence, the agents forwards data from endpoints to the server which generates alerts for the indexer to store, and all of this information can be viewed ffom the dashboard."
+  },
+  {
+    "objectID": "walkthroughs/OCI-Wazuh/index.html#deploy-with-oke",
+    "href": "walkthroughs/OCI-Wazuh/index.html#deploy-with-oke",
+    "title": "OCI Wazuh Deployment",
+    "section": "Deploy with OKE",
+    "text": "Deploy with OKE\n\nConfiguring OKE\n\n\nConfiguring Wazuh Files for OCI"
   },
   {
     "objectID": "projects/OCI-Puppet/index.html",
@@ -63,13 +84,6 @@
     "text": "Certifcate Management\nOn the Puppet Server Node, do the following:\n\nList Pending and Available Certificates\n\nsudo /usr/bin/puppetserver ca list --all    \n\nSign those certs\n\nsudo /usr/bin/puppetserver ca sign --all"
   },
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "Disclaimer\nThe views expressed on this blog are my own and do not reflect the views of the company(ies) I work (or have worked for) neither Oracle Corporation. The opinions expressed by visitors on this blog are theirs, not mine.\nThe information in this blog is written based on personal experiences. You are free to use the information on this blog but I am not responsible and will not compensate to you if you ever happen to suffer a loss/inconvenience/damage because of/while making use of this information."
-  },
-  {
     "objectID": "projects/index.html",
     "href": "projects/index.html",
     "title": "Projects",
@@ -77,32 +91,11 @@
     "text": "Date\n\n\n\nTitle\n\n\n\nAuthor\n\n\n\n\n\n\n\n\nFeb 17, 2025\n\n\nOCI Puppet LAMP Stack\n\n\n \n\n\n\n\n\n\nNo matching items"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "AB Paxtor Garcia",
+    "objectID": "walkthroughs/OCI-LiveLab/index.html",
+    "href": "walkthroughs/OCI-LiveLab/index.html",
+    "title": "OCI LiveLab",
     "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
-  },
-  {
-    "objectID": "walkthroughs/OCI-Wazuh/index.html",
-    "href": "walkthroughs/OCI-Wazuh/index.html",
-    "title": "OCI Wazuh Deployment",
-    "section": "",
-    "text": "Wazuh and OCI"
-  },
-  {
-    "objectID": "walkthroughs/OCI-Wazuh/index.html#what-is-wauzh",
-    "href": "walkthroughs/OCI-Wazuh/index.html#what-is-wauzh",
-    "title": "OCI Wazuh Deployment",
-    "section": "What is Wauzh?",
-    "text": "What is Wauzh?\nAs stated before, Wazuh is a SIEM solution, and is comprised of four main components:\n\nWazuh Indexer stores data and alerts which the Wazuh Server creates.\nWazuh Server serves as the analytics engine which detect threats or anomalies that are collected from endpoints.\nWazuh Dashboard visualizes alert and data from the Wazuh Server and Indexer, and highlights where agents are deployed.\nWazuh Agent(s) deploys on endpoints to forward collected data to the Wazuh Server.\n\nFurther, all four components must be running together, otherwise Wazuh will not function correctly.\nFor further visualization on how these four components work together, refer to the following diagram from Wazuh.\n\n\n\nWazuh Architecture\n\n\nIn essence, the agents forwards data from endpoints to the server which generates alerts for the indexer to store, and all of this information can be viewed ffom the dashboard."
-  },
-  {
-    "objectID": "walkthroughs/OCI-Wazuh/index.html#deploy-with-oke",
-    "href": "walkthroughs/OCI-Wazuh/index.html#deploy-with-oke",
-    "title": "OCI Wazuh Deployment",
-    "section": "Deploy with OKE",
-    "text": "Deploy with OKE\n\nConfiguring OKE\n\n\nConfiguring Wazuh Files for OCI"
+    "text": "SSH Keys\ncd .ssh\nssh-keygen -b 2048 -t rsa -f &lt;&lt;sshkeyname&gt;&gt;\n\n\nIAM\n\nCreated a compartment named “demo”\nCrated a domain within demo called “LiveLab”\nCreated a group within that domain called “oci-group”\ncreate user “TestUser” to be part of “oci-group”\n\n\n\nVCN\n\nCreated a VCN through wizard called “OCI_HOL_VCN”\n\n\nIP RANGE: 10.0.0.0/16, Public 10.0.1.0/24, Private 10.0.2.0/24\n\n\nCreated a Security group that allows SSH and TCP Traffic\n\n\n\nCOMPUTE\n\nCreated a Compute Instance\nUpdated Yum and installed HTTP\nConfigured Apache\n\nsudo yum install httpd -y\nsudo apachectl start\nsudo systemctl enable httpd\nsudo apachectl configtest\nsudo firewall-cmd --permanent --zone=public --add-service=http\nsudo firewall-cmd --reload\nsudo bash -c 'echo This is my Web-Server running on Oracle Cloud Infrastructure &gt;&gt; /var/www/html/index.html'\n\nSG already allowed TCP\n\n\n\nBlock Volume\n\nblock volume is created\nattached to instance\nRun iSCSI commands\nmount drive\n\nls -l /dev/oracleoci/oraclevd*\nsudo mkfs -t ext4 /dev/oracleoci/oraclevdb\nsudo mkdir /mnt/disk1\nsudo mount /dev/oracleoci/oraclevdb /mnt/disk1\ndf -h\n\n\nObject Storage\n\ncreated object storage\nuploaded file\nlink: link"
   },
   {
     "objectID": "walkthroughs/CSUN-GP/CSUN_GP_VPN.html",
@@ -124,5 +117,12 @@
     "title": "CSUN Global Protect",
     "section": "Windows",
     "text": "Windows\n\nI am on windows\n\n\nopen the app\n\n\n\n\nGlobal Protect Icon\n\n\n\nopen the minize apps on your task, and click the small icon\n\n\n\n\nGlobal Protect Minimized\n\n\n\nuse the following domain vpn.csun.edu\n\n\n\n\nCSUN GP Portal\n\n\n\nlog into your portal\n\n\n\n\nCSUN Portal Login\n\n\n\nyou are now connected\n\n\n\n\nConnected"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "Disclaimer\nThe views expressed on this blog are my own and do not reflect the views of the company(ies) I work (or have worked for) neither Oracle Corporation. The opinions expressed by visitors on this blog are theirs, not mine.\nThe information in this blog is written based on personal experiences. You are free to use the information on this blog but I am not responsible and will not compensate to you if you ever happen to suffer a loss/inconvenience/damage because of/while making use of this information."
   }
 ]
