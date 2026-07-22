@@ -46,7 +46,7 @@
     "href": "walkthroughs/OCI-Wazuh/index.html#what-is-wauzh",
     "title": "OCI Wazuh Deployment",
     "section": "What is Wauzh",
-    "text": "What is Wauzh\nAs stated before, Wazuh is a SIEM solution, and is comprised of four main components: - Wazuh Indexer stores data and alerts that the Wazuh Server creates. - Wazuh Server serves as the analytics engine which detect threats or anomalies that are collected from endpoints. - Wazuh Dashboard visualizes alert and data from the Wazuh Server and Indexer, and highlights where agents are deployed. - Wazuh Agent(s) deploys on endpoints to forward collected data to the Wazuh Server.\nFor further visualization on how these four components work together, refer to the following diagram from Wazuh.\n # Deployment Model\nWazuh has the following deployment models:"
+    "text": "What is Wauzh\nAs stated before, Wazuh is a SIEM solution, and is comprised of four main components: - Wazuh Indexer stores data and alerts that the Wazuh Server creates. - Wazuh Server serves as the analytics engine which detect threats or anomalies that are collected from endpoints. - Wazuh Dashboard visualizes alert and data from the Wazuh Server and Indexer, and highlights where agents are deployed. - Wazuh Agent(s) deploys on endpoints to forward collected data to the Wazuh Server.\nFor further visualization on how these four components work together, refer to the following diagram from Wazuh.\n\n\n\nWazuh Architecture"
   },
   {
     "objectID": "walkthroughs/OCI-Wazuh/index.html#deploy-with-oke",
