@@ -15,12 +15,24 @@ execute:
 
 # Introduction
 
+The following post aims to assist in the deployment of [Wazuh](https://documentation.wazuh.com/current/getting-started/index.html) as a centralized SIEM for Oracle Cloud Infrastructure (OCI). Additionally, we will discuss on how to enroll compute instances and import OCI logs into the SIEM.  
+
 ## What is Wauzh
 
 
-[Wazuh](https://documentation.wazuh.com/current/getting-started/index.html)
+As stated before, [Wazuh](https://documentation.wazuh.com/current/getting-started/index.html) is a SIEM solution, and is comprised of four main components:
+- [Wazuh Indexer](https://documentation.wazuh.com/current/installation-guide/wazuh-indexer/index.html) stores data and alerts that the Wazuh Server creates. 
+- [Wazuh Server](https://documentation.wazuh.com/current/installation-guide/wazuh-server/index.html) serves as the analytics engine which detect threats or anomalies that are collected from endpoints. 
+- [Wazuh Dashboard](https://documentation.wazuh.com/current/installation-guide/wazuh-dashboard/index.html) visualizes alert and data from the Wazuh Server and Indexer, and highlights where agents are deployed.
+- [Wazuh Agent(s)](https://documentation.wazuh.com/current/installation-guide/wazuh-agent/index.html) deploys on endpoints to forward collected data to the Wazuh Server.
 
-# Deployments
+
+For further visualization on how these four components work together, refer to the following diagram from Wazuh.
+
+![Wazuh Architecture](https://documentation.wazuh.com/current/_images/deployment-architecture1.png)
+# Deployment Model 
+
+Wazuh has the following deployment models:
 
 ## Deploy with OKE
 
