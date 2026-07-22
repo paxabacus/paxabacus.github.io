@@ -45,9 +45,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-2a3365765cdc575279a0725d1a3029c0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-bde1eeb6e24c67a6539b9ce1a1f0a058.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-2a3365765cdc575279a0725d1a3029c0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-a3dbd0731ee2e4051cde61d66d0ae82f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-c6f1b31357d75efc5d662962001d1b03.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-a3dbd0731ee2e4051cde61d66d0ae82f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -357,7 +357,13 @@ ul.task-list li input[type="checkbox"] {
 <p>The following post aims to assist in the deployment of <a href="https://documentation.wazuh.com/current/getting-started/index.html">Wazuh</a> as a centralized Security Information and Event Magament (SIEM) for Oracle Cloud Infrastructure (OCI) via Oracle Kubernetes Engine (OKE). Additionally, we will discuss on how to enroll compute instances and import OCI logs into the SIEM.</p>
 <section id="what-is-wauzh" class="level2">
 <h2 class="anchored" data-anchor-id="what-is-wauzh">What is Wauzh</h2>
-<p>As stated before, <a href="https://documentation.wazuh.com/current/getting-started/index.html">Wazuh</a> is a SIEM solution, and is comprised of four main components: * <a href="https://documentation.wazuh.com/current/installation-guide/wazuh-indexer/index.html">Wazuh Indexer</a> stores data and alerts which the Wazuh Server creates. * <a href="https://documentation.wazuh.com/current/installation-guide/wazuh-server/index.html">Wazuh Server</a> serves as the analytics engine which detect threats or anomalies that are collected from endpoints. * <a href="https://documentation.wazuh.com/current/installation-guide/wazuh-dashboard/index.html">Wazuh Dashboard</a> visualizes alert and data from the Wazuh Server and Indexer, and highlights where agents are deployed. * <a href="https://documentation.wazuh.com/current/installation-guide/wazuh-agent/index.html">Wazuh Agent(s)</a> deploys on endpoints to forward collected data to the Wazuh Server.</p>
+<p>As stated before, <a href="https://documentation.wazuh.com/current/getting-started/index.html">Wazuh</a> is a SIEM solution, and is comprised of four main components:</p>
+<ul>
+<li><a href="https://documentation.wazuh.com/current/installation-guide/wazuh-indexer/index.html">Wazuh Indexer</a> stores data and alerts which the Wazuh Server creates.</li>
+<li><a href="https://documentation.wazuh.com/current/installation-guide/wazuh-server/index.html">Wazuh Server</a> serves as the analytics engine which detect threats or anomalies that are collected from endpoints.</li>
+<li><a href="https://documentation.wazuh.com/current/installation-guide/wazuh-dashboard/index.html">Wazuh Dashboard</a> visualizes alert and data from the Wazuh Server and Indexer, and highlights where agents are deployed.</li>
+<li><a href="https://documentation.wazuh.com/current/installation-guide/wazuh-agent/index.html">Wazuh Agent(s)</a> deploys on endpoints to forward collected data to the Wazuh Server.</li>
+</ul>
 <p>For further visualization on how these four components work together, refer to the following diagram from Wazuh.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -369,7 +375,8 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="deployment" class="level1">
 <h1>Deployment</h1>
-<p>Wazuh has multiple deployment models which can be found on its <a href="https://documentation.wazuh.com/current/installation-guide/index.html">installation page</a> and <a href="https://documentation.wazuh.com/current/deployment-options/index.html">alternative installations page</a>. For this blog, we will focus on the <a href="https://documentation.wazuh.com/current/deployment-options/deploying-with-kubernetes/index.html">Deployment on Kubernetes</a>.</p>
+<p>Wazuh has multiple deployment models which can be found on its <a href="https://documentation.wazuh.com/current/installation-guide/index.html">installation page</a> and <a href="https://documentation.wazuh.com/current/deployment-options/index.html">alternative installations page</a>.</p>
+<p>For this blog, we will focus on the <a href="https://documentation.wazuh.com/current/deployment-options/deploying-with-kubernetes/index.html">Deployment on Kubernetes</a>.</p>
 <section id="deploy-with-oke" class="level2">
 <h2 class="anchored" data-anchor-id="deploy-with-oke">Deploy with OKE</h2>
 <section id="configuring-oke" class="level3">
