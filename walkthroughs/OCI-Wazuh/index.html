@@ -455,7 +455,8 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<p>Do note that our networking configuration may differ, so do take note of your given values. Additionally, you may add another subnet that allows for public addressing, and a separate security list for access. For this blog, the following subnet and security list has been created in the OKE VCN for Wazuh Acess via a Compute Instance through a local forwarding SSH tunnel.</p>
+<p>Do note that our networking configuration may differ, so do take note of your given values. Additionally, you may add another subnet that allows for public addressing, and a separate security list for access.</p>
+<p>For this blog, the following subnet and security list has been created in the OKE VCN for Wazuh Acess via a Compute Instance through a local forwarding SSH tunnel.</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -476,6 +477,10 @@ ul.task-list li input[type="checkbox"] {
 <td>Security List Ingress</td>
 <td>SSH from 0.0.0.0/0</td>
 </tr>
+<tr class="even">
+<td>Security List Egress</td>
+<td>All to 0.0.0.0/0</td>
+</tr>
 </tbody>
 </table>
 <p>These are just example values, so please ensure the values match your environment.</p>
@@ -483,7 +488,19 @@ ul.task-list li input[type="checkbox"] {
 <section id="configuring-wazuh-for-the-cluster" class="level3">
 <h3 class="anchored" data-anchor-id="configuring-wazuh-for-the-cluster">Configuring Wazuh for the Cluster</h3>
 <p>There are multiple methods on accessing the private OKE cluster to configure Wazuh which includes OCI Bastion Service, OCI Shell, or via a Compute Instance. For now, we will be configuring Wazuh via a Compute Instance is on the same VCN as the OKE cluster and can access its nodes. Moreover, the instance must be publically accessible via SSH at the minimum.</p>
-<p>For now, I have created a simple Oracle Linux 9 Instance that it on the <code>10.0.30.0/24</code> subnet.</p>
+<p>For now, I have created a simple Oracle Linux 9 Instance that it on the <code>10.0.30.0/24</code> subnet. Once, the instance is the instance is running SSH into it.</p>
+<p><code>ssh -i &lt;ssh-key&gt; opc@&lt;public address of the instance&gt;</code></p>
+<p>Afterwards, <a href="https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/cliinstall.htm#InstallingCLI__oraclelinux9">install the OCI CLI</a>.</p>
+<p>Next, we will be configuring the kubeconfig for our private endpoint. You may need to configure the OCI-CLI config file, and the guide can be found <a href="https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/cliinstall.htm#configfile">here.</a></p>
+<pre><code>mkdir -p "$HOME/.kube"
+
+oci ce cluster create-kubeconfig \
+  --cluster-id &lt;YOUR-OKE-CLUSTER_OCID&gt; \
+  --file "$HOME/.kube/config" \
+  --region us-ashburn-1 \
+  --token-version 2.0.0 \
+  --kube-endpoint PRIVATE_ENDPOINT</code></pre>
+<p>Additionally, we will need to install <code>Kubectl</code> onto our instance which can be found at the <a href="https://docs.oracle.com/en/operating-systems/olcne/1.8/install/prereq.html#repo">oracle cloud native environment guide</a> and the <a href="https://docs.oracle.com/en/operating-systems/olcne/2/upgrade/kubectl_install_task.html">install kubectl</a> guide.</p>
 </section>
 </section>
 </section>
