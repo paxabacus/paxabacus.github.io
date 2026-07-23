@@ -304,8 +304,8 @@ ul.task-list li input[type="checkbox"] {
   <ul class="collapse">
   <li><a href="#deploy-with-oke" id="toc-deploy-with-oke" class="nav-link" data-scroll-target="#deploy-with-oke">Deploy with OKE</a>
   <ul class="collapse">
-  <li><a href="#configuring-oke" id="toc-configuring-oke" class="nav-link" data-scroll-target="#configuring-oke">Configuring OKE</a></li>
-  <li><a href="#configuring-wazuh-files-for-oci" id="toc-configuring-wazuh-files-for-oci" class="nav-link" data-scroll-target="#configuring-wazuh-files-for-oci">Configuring Wazuh Files for OCI</a></li>
+  <li><a href="#configuring-oke-cluster" id="toc-configuring-oke-cluster" class="nav-link" data-scroll-target="#configuring-oke-cluster">Configuring OKE Cluster</a></li>
+  <li><a href="#configuring-wazuh-for-the-cluster" id="toc-configuring-wazuh-for-the-cluster" class="nav-link" data-scroll-target="#configuring-wazuh-for-the-cluster">Configuring Wazuh for the Cluster</a></li>
   </ul></li>
   </ul></li>
   <li><a href="#leveraging-agents" id="toc-leveraging-agents" class="nav-link" data-scroll-target="#leveraging-agents">Leveraging Agents</a></li>
@@ -389,11 +389,101 @@ ul.task-list li input[type="checkbox"] {
 <p>For this blog, we will focus on the <a href="https://documentation.wazuh.com/current/deployment-options/deploying-with-kubernetes/index.html">Deployment on Kubernetes</a> section.</p>
 <section id="deploy-with-oke" class="level2">
 <h2 class="anchored" data-anchor-id="deploy-with-oke">Deploy with OKE</h2>
-<section id="configuring-oke" class="level3">
-<h3 class="anchored" data-anchor-id="configuring-oke">Configuring OKE</h3>
+<section id="configuring-oke-cluster" class="level3">
+<h3 class="anchored" data-anchor-id="configuring-oke-cluster">Configuring OKE Cluster</h3>
+<p>OKE allows for two creation methods for clusters which are Quick Create or Custom Create. For this blog, we will be using Quick Create as it provisions the Virtual Cloud Network (VCN), Internet Gateway (IG), NAT Gateway (NAT), Service Gateway (SGW), Cluster, and Node Pool for us.</p>
+<p>When creating the OKE cluster through Quick Creation, we will expect similar values for the following:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Component</th>
+<th>New value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Cluster</td>
+<td><code>AB-Quick-Cluster</code></td>
+</tr>
+<tr class="even">
+<td>Cluster type</td>
+<td>Basic</td>
+</tr>
+<tr class="odd">
+<td>Kubernetes</td>
+<td><code>v1.36.1</code></td>
+</tr>
+<tr class="even">
+<td>Network type</td>
+<td>OCI VCN-native</td>
+</tr>
+<tr class="odd">
+<td>VCN</td>
+<td>Quick Create-generated VCN</td>
+</tr>
+<tr class="even">
+<td>VCN CIDR</td>
+<td><code>10.0.0.0/16</code></td>
+</tr>
+<tr class="odd">
+<td>Private API subnet</td>
+<td><code>10.0.0.0/28</code></td>
+</tr>
+<tr class="even">
+<td>Private API endpoint</td>
+<td><code>10.0.0.11:6443</code></td>
+</tr>
+<tr class="odd">
+<td>Worker-node subnet</td>
+<td><code>10.0.10.0/24</code></td>
+</tr>
+<tr class="even">
+<td>Service LB subnet</td>
+<td><code>10.0.20.0/24</code></td>
+</tr>
+<tr class="odd">
+<td>Kubernetes Service CIDR</td>
+<td><code>10.96.0.0/16</code></td>
+</tr>
+<tr class="even">
+<td>Network Security Groups</td>
+<td>None</td>
+</tr>
+<tr class="odd">
+<td>Security Lists</td>
+<td>Three Quick Create-generated lists</td>
+</tr>
+</tbody>
+</table>
+<p>Do note that our networking configuration may differ, so do take note of your given values. Additionally, you may add another subnet that allows for public addressing, and a separate security list for access. For this blog, the following subnet and security list has been created in the OKE VCN for Wazuh Acess via a Compute Instance through a local forwarding SSH tunnel.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Component</th>
+<th>New Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Compute Subnet</td>
+<td><code>10.0.30.0/24</code></td>
+</tr>
+<tr class="even">
+<td>Security List</td>
+<td>OKE-Wazuh-Compute</td>
+</tr>
+<tr class="odd">
+<td>Security List Ingress</td>
+<td>SSH from 0.0.0.0/0</td>
+</tr>
+</tbody>
+</table>
+<p>These are just example values, so please ensure the values match your environment.</p>
 </section>
-<section id="configuring-wazuh-files-for-oci" class="level3">
-<h3 class="anchored" data-anchor-id="configuring-wazuh-files-for-oci">Configuring Wazuh Files for OCI</h3>
+<section id="configuring-wazuh-for-the-cluster" class="level3">
+<h3 class="anchored" data-anchor-id="configuring-wazuh-for-the-cluster">Configuring Wazuh for the Cluster</h3>
+<p>There are multiple methods on accessing the private OKE cluster to configure Wazuh which includes OCI Bastion Service, OCI Shell, or via a Compute Instance. For now, we will be configuring Wazuh via a Compute Instance is on the same VCN as the OKE cluster and can access its nodes. Moreover, the instance must be publically accessible via SSH at the minimum.</p>
+<p>For now, I have created a simple Oracle Linux 9 Instance that it on the <code>10.0.30.0/24</code> subnet.</p>
 </section>
 </section>
 </section>
