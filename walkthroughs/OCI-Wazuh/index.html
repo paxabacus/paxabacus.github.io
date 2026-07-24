@@ -27,6 +27,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -309,6 +344,7 @@ ul.task-list li input[type="checkbox"] {
   <ul class="collapse">
   <li><a href="#configuring-oke-cluster" id="toc-configuring-oke-cluster" class="nav-link" data-scroll-target="#configuring-oke-cluster">Configuring OKE Cluster</a></li>
   <li><a href="#configuring-wazuh-for-the-cluster" id="toc-configuring-wazuh-for-the-cluster" class="nav-link" data-scroll-target="#configuring-wazuh-for-the-cluster">Configuring Wazuh for the Cluster</a></li>
+  <li><a href="#validate-and-deploy-wazuh" id="toc-validate-and-deploy-wazuh" class="nav-link" data-scroll-target="#validate-and-deploy-wazuh">Validate and Deploy Wazuh</a></li>
   </ul></li>
   </ul></li>
   <li><a href="#leveraging-agents" id="toc-leveraging-agents" class="nav-link" data-scroll-target="#leveraging-agents">Leveraging Agents</a></li>
@@ -458,7 +494,7 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="even">
 <td>Node Count</td>
-<td>2</td>
+<td>3</td>
 </tr>
 <tr class="odd">
 <td>Node Shape</td>
@@ -466,11 +502,11 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="even">
 <td>Number of OCPUs</td>
-<td>2 (minimum)</td>
+<td>2</td>
 </tr>
 <tr class="odd">
 <td>Memory (GB)</td>
-<td>8 (Minimum)</td>
+<td>8</td>
 </tr>
 <tr class="even">
 <td>Node Image</td>
@@ -479,7 +515,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 <p>Do note that our networking configuration may differ, so do take note of your given values. Additionally, you may add another subnet that allows for public addressing, and a separate security list for access.</p>
-<p>For this blog, the following subnet and security list has been created in the OKE VCN for Wazuh Acess via a Compute Instance through a local forwarding SSH tunnel.</p>
+<p>For this blog, the following subnet and security list has been created in the OKE VCN for Wazuh Acess via a Compute Instance through a local forwarding SSH tunnel. This instance will be our jumpbox.</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -510,20 +546,118 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="configuring-wazuh-for-the-cluster" class="level3">
 <h3 class="anchored" data-anchor-id="configuring-wazuh-for-the-cluster">Configuring Wazuh for the Cluster</h3>
-<p>There are multiple methods on accessing the private OKE cluster to configure Wazuh which includes OCI Bastion Service, OCI Shell, or via a Compute Instance. For now, we will be configuring Wazuh via a Compute Instance is on the same VCN as the OKE cluster and can access its nodes. Moreover, the instance must be publically accessible via SSH at the minimum.</p>
-<p>For now, I have created a simple Oracle Linux 9 Instance that it on the <code>10.0.30.0/24</code> subnet. Once, the instance is the instance is running SSH into it.</p>
+<p>There are multiple methods on accessing the private OKE cluster to configure Wazuh which includes OCI Bastion Service, OCI Shell, or via a Compute Instance. We will be configuring Wazuh via a Compute Instance is on the same VCN as the OKE cluster and can access its nodes.</p>
+<p>For now, I have created a simple Oracle Linux 8 Instance that is on the <code>10.0.30.0/24</code> subnet to serve as our jumpbox. Once, the instance is the instance is running SSH into it.</p>
 <p><code>ssh -i &lt;ssh-key&gt; opc@&lt;public address of the instance&gt;</code></p>
 <p>Afterwards, <a href="https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/cliinstall.htm#InstallingCLI__oraclelinux9">install the OCI CLI</a>.</p>
 <p>Next, we will be configuring the kubeconfig for our private endpoint. You may need to configure the OCI-CLI config file, and the guide can be found <a href="https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/cliinstall.htm#configfile">here.</a></p>
-<pre><code>mkdir -p "$HOME/.kube"
-
-oci ce cluster create-kubeconfig \
-  --cluster-id &lt;YOUR-OKE-CLUSTER_OCID&gt; \
-  --file "$HOME/.kube/config" \
-  --region us-ashburn-1 \
-  --token-version 2.0.0 \
-  --kube-endpoint PRIVATE_ENDPOINT</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">"</span><span class="va">$HOME</span><span class="st">/.kube"</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">oci</span> ce cluster create-kubeconfig <span class="dt">\</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">--cluster-id</span> <span class="op">&lt;</span>YOUR-OKE-CLUSTER_OCID<span class="op">&gt;</span> <span class="dt">\</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">--file</span> <span class="st">"</span><span class="va">$HOME</span><span class="st">/.kube/config"</span> <span class="dt">\</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">--region</span> us-ashburn-1 <span class="dt">\</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">--token-version</span> 2.0.0 <span class="dt">\</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">--kube-endpoint</span> PRIVATE_ENDPOINT</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Additionally, we will need to install <code>Kubectl</code> onto our instance which can be found at the <a href="https://docs.oracle.com/en/operating-systems/olcne/1.8/install/prereq.html#repo">oracle cloud native environment guide</a> and the <a href="https://docs.oracle.com/en/operating-systems/olcne/2/upgrade/kubectl_install_task.html">install kubectl</a> guide.</p>
+<p>Then, we can clone the <code>Wazuh-Kubernetes</code> repository onto the jumpbox.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/wazuh/wazuh-kubernetes.git <span class="dt">\</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-b</span> v4.14.6 <span class="at">--depth</span><span class="op">=</span>1</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> wazuh-kubernetes</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Next, generate the self-signed certificates for Wazuh.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">./wazuh/certs/indexer_cluster/generate_certs.sh</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">./wazuh/certs/dashboard_http/generate_certs.sh</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Once the certificates been generated, the values within the Kubernetes manifest must be updated to leverage OCI internal load balancers</p>
+<section id="updating-the-docker-images-in-the-deployment-files" class="level4">
+<h4 class="anchored" data-anchor-id="updating-the-docker-images-in-the-deployment-files">Updating the docker images in the deployment files</h4>
+<p>The following files located in the <code>wazuh-kubernetes</code> repo need to have the image value updated.</p>
+<pre><code>wazuh/indexer_stack/wazuh-dashboard/dashboard-deploy.yaml
+wazuh/indexer_stack/wazuh-indexer/cluster/indexer-sts.yaml
+wazuh/wazuh_managers/wazuh-master-sts.yaml
+wazuh/wazuh_managers/wazuh-workers-sts.yaml</code></pre>
+<p>Within each yaml the image value will be formated as the following <code>wazuh/&lt;service&gt;</code>, please update it to <code>docker.io/wazuh/&lt;service&gt;</code>. This is done to avoid CRI-O name errors.</p>
+<p>For example, in <code>wazuh/indexer_stack/wazuh-dashboard/dashboard-deploy.yaml</code></p>
+<p>The image value is <code>wazuh/wazuh-dashboard:4.14.6</code>, so simply update the value to be <code>docker.io/wazuh/wazuh-dsashboard:4.14.6</code>. And do this to each of the previously mentioned files.</p>
+</section>
+<section id="updating-service-manifests-in-wazuh-to-use-private-oci-load-balancers." class="level4">
+<h4 class="anchored" data-anchor-id="updating-service-manifests-in-wazuh-to-use-private-oci-load-balancers.">Updating Service Manifests in Wazuh to use Private OCI Load Balancers.</h4>
+<p>The default manifest values are not tailored for OCI, so we must update them. And the files for which need to be updated are the following</p>
+<pre><code>wazuh/indexer_stack/wazuh-dashboard/dashboard-svc.yaml
+wazuh/indexer_stack/wazuh-indexer/cluster/indexer-api-svc.yaml
+wazuh/wazuh_managers/wazuh-master-svc.yaml
+wazuh/wazuh_managers/wazuh-workers-svc.yaml  </code></pre>
+<p>For <code>dashboard-svc.yaml</code>, we will commend out non-OCI statements and add <code>service.beta.kubernetes.io/oci-load-balancer-internal: "true"</code> within the <code>annotations</code> section.</p>
+<p>The yaml file will appear similar to the following:</p>
+<pre><code># Copyright (C) 2019, Wazuh Inc.
+#
+# This program is a free software; you can redistribute it
+# and/or modify it under the terms of the GNU General Public
+# License (version 2) as published by the FSF - Free Software
+# Foundation.
+
+# Dashboard service
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: dashboard
+  namespace: wazuh
+  labels:
+    app: wazuh-dashboard
+  annotations:
+    service.beta.kubernetes.io/oci-load-balancer-internal: "true"
+spec:
+  type: LoadBalancer
+  selector:
+    app: wazuh-dashboard
+  ports:
+    - name: dashboard
+      port: 443
+      targetPort: 5601  </code></pre>
+<p>For <code>wazuh-master-svc.yaml</code> and <code>wazuh-workers-svc.yaml</code>, the <code>annotations</code> section to be the same as the example above.</p>
+<p>Lastly, <code>indexer-api-svc.yaml</code> will have the <code>type</code> variable updated to <code>type: ClusterIP</code> as shown in the following example.</p>
+<pre><code># Copyright (C) 2019, Wazuh Inc.
+#
+# This program is a free software; you can redistribute it
+# and/or modify it under the terms of the GNU General Public
+# License (version 2) as published by the FSF - Free Software
+# Foundation.
+
+# Indexer service: API
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: indexer
+  namespace: wazuh
+  labels:
+    app: wazuh-indexer
+spec:
+  type: ClusterIP
+  selector:
+    app: wazuh-indexer
+  ports:
+    - name: indexer-rest
+      port: 9200
+      targetPort: 9200</code></pre>
+</section>
+</section>
+<section id="validate-and-deploy-wazuh" class="level3">
+<h3 class="anchored" data-anchor-id="validate-and-deploy-wazuh">Validate and Deploy Wazuh</h3>
+<p>Render before applying to validate the manifest.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">kubectl</span> kustomize envs/local-env/ <span class="op">&gt;</span> /tmp/wazuh-rendered.yaml</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Then deploy.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">kubectl</span> apply <span class="at">-k</span> envs/local-env/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>To check pods status, use:</p>
+<p><code>kubectl get pods -n wazuh -w</code></p>
+<p>Once the pods are in the running state use the following to confrim connectivty between Wazuh-Dasboard to Wazuh-Indexer, and Waazuh-Dashboard to Wazuh-Manager. A <code>401 Unauthorized</code> Error is expected, and highlight that authentication is enforced.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">kubectl</span> exec <span class="at">-n</span> wazuh deployment/wazuh-dashboard <span class="at">--</span> <span class="dt">\</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  sh <span class="at">-c</span> <span class="st">'curl -skI https://indexer:9200/'</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="ex">kubectl</span> exec <span class="at">-n</span> wazuh deployment/wazuh-dashboard <span class="at">--</span> <span class="dt">\</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  sh <span class="at">-c</span> <span class="st">'curl -skI https://wazuh:55000/'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
 </section>
