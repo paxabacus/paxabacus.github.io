@@ -270,6 +270,37 @@ kubectl exec -n wazuh deployment/wazuh-dashboard -- \
   sh -c 'curl -skI https://wazuh:55000/'
 ```
 
+To get the private Dashboard load-balancer address:
+
+```bash
+kubectl get svc dashboard -n wazuh
+```
+
+
+SSH into the jumpbox, with the following parameters to establish a forward local port on 8443 to connect to the private Dashboard load balancer.
+
+```bash
+ssh -i <ssh-key> -N -T -o ExitOnForwardFailure=yes \
+  -L 127.0.0.1:8443:<dashboard-private-ip>:443 \
+  opc@<jumpbox-public-ip>
+```
+
+And now on your workstation's browser, open `https://localhost:8443` Since the certificate is self-signed, there will be a warning. However, proceeding pass the warning will open the Wazuh Dashboard
+
+
+
+To get the password of Wazuh, use the following within the jumpbox:
+
+```bash
+kubectl get secret indexer-cred -n wazuh \
+  -o jsonpath='{.data.username}' | base64 --decode; echo
+
+kubectl get secret indexer-cred -n wazuh \
+  -o jsonpath='{.data.password}' | base64 --decode; echo
+```
+
+
+
 
 
 
