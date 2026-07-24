@@ -15,7 +15,7 @@ execute:
 
 # Introduction
 
-The following post aims to assist in the deployment of [Wazuh](https://documentation.wazuh.com/current/getting-started/index.html) as a centralized Security Information and Event Magament (SIEM) for Oracle Cloud Infrastructure (OCI) via a private Oracle Kubernetes Engine (OKE) cluster. Additionally, we will discuss on how to enroll compute instances and import OCI logs into the SIEM.
+The following post aims to assist in the deployment of [Wazuh](https://documentation.wazuh.com/current/getting-started/index.html) as a centralized Security Information and Event Magament (SIEM) for Oracle Cloud Infrastructure (OCI) via a private Oracle Kubernetes Engine (OKE) cluster.
 
 Through this blog, we will have accomplished the following tasks:
 
@@ -28,7 +28,7 @@ Through this blog, we will have accomplished the following tasks:
 ## What is Wauzh?
 
 
-As stated before, [Wazuh](https://documentation.wazuh.com/current/getting-started/index.html) is a SIEM solution, and is comprised of four main components:
+As stated before, Wazuh is a SIEM solution, and is comprised of four main components:
 
 * [Wazuh Indexer](https://documentation.wazuh.com/current/installation-guide/wazuh-indexer/index.html) stores data and alerts which the Wazuh Server creates. 
 * [Wazuh Server](https://documentation.wazuh.com/current/installation-guide/wazuh-server/index.html) serves as the analytics engine which detect threats or anomalies that are collected from endpoints. 
@@ -42,7 +42,7 @@ For further visualization on how these four components work together, refer to t
 ![Wazuh Architecture](https://documentation.wazuh.com/current/_images/deployment-architecture1.png)
 
 
-In essence, the agents forwards data from endpoints to the server which generates alerts for the indexer to store, and all of this information can be viewed ffom the dashboard.
+In essence, the agents forwards data from endpoints to the server which generates alerts for the indexer to store, and all of this information can be viewed from the dashboard.
 
 
 # Deployment
@@ -65,8 +65,11 @@ When creating the OKE cluster through Quick Creation, we will expect similar val
 |---|---|
 | Cluster | `AB-Quick-Cluster` |
 | Cluster type | Basic |
-| Kubernetes | `v1.36.1` |
+| Kubernetes | `v1.36` |
 | Network type | OCI VCN-native |
+| Kubernetes API Endpoint | Private |
+| Node Type | Managed|
+| Kuberenetes Worker Nodes | Private|
 | VCN | Quick Create-generated VCN |
 | VCN CIDR | `10.0.0.0/16` |
 | Private API subnet | `10.0.0.0/28` |
@@ -84,7 +87,7 @@ When creating the OKE cluster through Quick Creation, we will expect similar val
 
 Do note that our networking configuration may differ, so do take note of your given values. Additionally, you may add another subnet that allows for public addressing, and a separate security list for access.
 
-For this blog, the following subnet and security list has been created in the OKE VCN for Wazuh Acess via a Compute Instance through a local forwarding SSH tunnel. This instance will be our jumpbox.
+For this blog, the following subnet and security list has been created in the OKE VCN for Wazuh Access via a Compute Instance through a local forwarding SSH tunnel. This instance will be our jumpbox.
 
 | Component | New Value |
 |---|---|
@@ -299,17 +302,6 @@ kubectl get secret indexer-cred -n wazuh \
   -o jsonpath='{.data.password}' | base64 --decode; echo
 ```
 
-
-
-
-
-
-
-
-# Leveraging Agents
-
-
-# OCI Logs into Wazuh
 
 
 # Summary
