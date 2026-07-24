@@ -76,15 +76,15 @@ When creating the OKE cluster through Quick Creation, we will expect similar val
 | Kubernetes Service CIDR | `10.96.0.0/16` |
 | Network Security Groups | None |
 | Security Lists | Three Quick Create-generated lists |
-| Node Count | 2 |
+| Node Count | 3 |
 | Node Shape | VM.Standard.E5.Flex|
-| Number of OCPUs | 2 (minimum) |
-| Memory (GB) | 8 (Minimum) |
+| Number of OCPUs | 2  |
+| Memory (GB) | 8  |
 | Node Image | Oracle Linux 8 | 
 
 Do note that our networking configuration may differ, so do take note of your given values. Additionally, you may add another subnet that allows for public addressing, and a separate security list for access.
 
-For this blog, the following subnet and security list has been created in the OKE VCN for Wazuh Acess via a Compute Instance through a local forwarding SSH tunnel.
+For this blog, the following subnet and security list has been created in the OKE VCN for Wazuh Acess via a Compute Instance through a local forwarding SSH tunnel. This instance will be our jumpbox.
 
 | Component | New Value |
 |---|---|
@@ -100,9 +100,9 @@ These are just example values, so please ensure the values match your environmen
 
 ### Configuring Wazuh for the Cluster
 
-There are multiple methods on accessing the private OKE cluster to configure Wazuh which includes OCI Bastion Service, OCI Shell, or via a Compute Instance. For now, we will be configuring Wazuh via a Compute Instance is on the same VCN as the OKE cluster and can access its nodes. Moreover, the instance must be publically accessible via SSH at the minimum.
+There are multiple methods on accessing the private OKE cluster to configure Wazuh which includes OCI Bastion Service, OCI Shell, or via a Compute Instance. We will be configuring Wazuh via a Compute Instance is on the same VCN as the OKE cluster and can access its nodes.
 
-For now, I have created a simple Oracle Linux 9 Instance that it on the `10.0.30.0/24` subnet. Once, the instance is the instance is running SSH into it.
+For now, I have created a simple Oracle Linux 8 Instance that is on the `10.0.30.0/24` subnet to serve as our jumpbox. Once, the instance is the instance is running SSH into it.
 
 `ssh -i <ssh-key> opc@<public address of the instance>`
 
@@ -110,7 +110,7 @@ Afterwards, [install the OCI CLI](https://docs.oracle.com/en-us/iaas/Content/API
 
 Next, we will be configuring the kubeconfig for our private endpoint. You may need to configure the OCI-CLI config file, and the guide can be found [here.](https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/cliinstall.htm#configfile)
 
-```
+```bash
 mkdir -p "$HOME/.kube"
 
 oci ce cluster create-kubeconfig \
@@ -127,12 +127,152 @@ Additionally, we will need to install `Kubectl` onto our instance which can be f
 
 
 
+Then, we can clone the `Wazuh-Kubernetes` repository onto the jumpbox.
+
+```bash
+git clone https://github.com/wazuh/wazuh-kubernetes.git \
+  -b v4.14.6 --depth=1
+
+cd wazuh-kubernetes
+
+````
+
+Next, generate the self-signed certificates for Wazuh.
+
+```bash
+
+./wazuh/certs/indexer_cluster/generate_certs.sh
+./wazuh/certs/dashboard_http/generate_certs.sh
+````
+
+Once the certificates been generated, the values within the Kubernetes manifest must be updated to leverage OCI internal load balancers
+
+#### Updating the docker images in the deployment files
+
+The following files located in the `wazuh-kubernetes` repo need to have the image value updated.
+
+````
+wazuh/indexer_stack/wazuh-dashboard/dashboard-deploy.yaml
+wazuh/indexer_stack/wazuh-indexer/cluster/indexer-sts.yaml
+wazuh/wazuh_managers/wazuh-master-sts.yaml
+wazuh/wazuh_managers/wazuh-workers-sts.yaml
+````
+
+Within each yaml the image value will be formated as the following `wazuh/<service>`, please update it to `docker.io/wazuh/<service>`. This is done to avoid CRI-O name errors.
+
+For example, in `wazuh/indexer_stack/wazuh-dashboard/dashboard-deploy.yaml`
+
+The image value is `wazuh/wazuh-dashboard:4.14.6`, so simply update the value to be `docker.io/wazuh/wazuh-dsashboard:4.14.6`. And do this to each of the previously mentioned files.
 
 
 
+#### Updating Service Manifests in Wazuh to use Private OCI Load Balancers.
+
+The default manifest values are not tailored for OCI, so we must update them. And the files for which need to be updated are the following
+
+```
+wazuh/indexer_stack/wazuh-dashboard/dashboard-svc.yaml
+wazuh/indexer_stack/wazuh-indexer/cluster/indexer-api-svc.yaml
+wazuh/wazuh_managers/wazuh-master-svc.yaml
+wazuh/wazuh_managers/wazuh-workers-svc.yaml  
+```
+
+For `dashboard-svc.yaml`, we will commend out non-OCI statements and add `service.beta.kubernetes.io/oci-load-balancer-internal: "true"` within the `annotations` section.
+
+The yaml file will appear similar to the following:
+
+```
+# Copyright (C) 2019, Wazuh Inc.
+#
+# This program is a free software; you can redistribute it
+# and/or modify it under the terms of the GNU General Public
+# License (version 2) as published by the FSF - Free Software
+# Foundation.
+
+# Dashboard service
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: dashboard
+  namespace: wazuh
+  labels:
+    app: wazuh-dashboard
+  annotations:
+    service.beta.kubernetes.io/oci-load-balancer-internal: "true"
+spec:
+  type: LoadBalancer
+  selector:
+    app: wazuh-dashboard
+  ports:
+    - name: dashboard
+      port: 443
+      targetPort: 5601  
+```
+
+For `wazuh-master-svc.yaml` and `wazuh-workers-svc.yaml`, the `annotations` section to be the same as the example above.
+
+Lastly, `indexer-api-svc.yaml` will have the `type` variable updated to `type: ClusterIP` as shown in the following example.
+
+```
+# Copyright (C) 2019, Wazuh Inc.
+#
+# This program is a free software; you can redistribute it
+# and/or modify it under the terms of the GNU General Public
+# License (version 2) as published by the FSF - Free Software
+# Foundation.
+
+# Indexer service: API
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: indexer
+  namespace: wazuh
+  labels:
+    app: wazuh-indexer
+spec:
+  type: ClusterIP
+  selector:
+    app: wazuh-indexer
+  ports:
+    - name: indexer-rest
+      port: 9200
+      targetPort: 9200
+```
 
 
+### Validate and Deploy Wazuh
+
+Render before applying to validate the manifest.
+
+```bash
+kubectl kustomize envs/local-env/ > /tmp/wazuh-rendered.yaml
+```
+
+Then deploy.
  
+````bash
+kubectl apply -k envs/local-env/
+````
+
+To check pods status, use:
+
+`kubectl get pods -n wazuh -w`
+
+Once the pods are in the running state use the following to confrim connectivty between Wazuh-Dasboard to Wazuh-Indexer, and Waazuh-Dashboard to Wazuh-Manager. A `401 Unauthorized` Error is expected, and highlight that authentication is enforced.
+
+```bash
+kubectl exec -n wazuh deployment/wazuh-dashboard -- \
+  sh -c 'curl -skI https://indexer:9200/'
+
+kubectl exec -n wazuh deployment/wazuh-dashboard -- \
+  sh -c 'curl -skI https://wazuh:55000/'
+```
+
+
+
+
 
 
 # Leveraging Agents
