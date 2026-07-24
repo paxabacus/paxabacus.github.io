@@ -1,12 +1,5 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "AB Paxtor Garcia",
-    "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
-  },
-  {
     "objectID": "walkthroughs/CSUN-GP/index.html",
     "href": "walkthroughs/CSUN-GP/index.html",
     "title": "CSUN Global Protect",
@@ -35,25 +28,11 @@
     "text": "Date\n\n\n\nTitle\n\n\n\nAuthor\n\n\n\n\n\n\n\n\nJul 20, 2026\n\n\nOCI Wazuh Deployment\n\n\n \n\n\n\n\n\n\nFeb 26, 2025\n\n\nCSUN Global Protect\n\n\n \n\n\n\n\n\n\nFeb 17, 2025\n\n\nOCI LiveLab\n\n\n \n\n\n\n\n\n\nNo matching items"
   },
   {
-    "objectID": "walkthroughs/OCI-Wazuh/index.html",
-    "href": "walkthroughs/OCI-Wazuh/index.html",
-    "title": "OCI Wazuh Deployment",
+    "objectID": "walkthroughs/OCI-LiveLab/index.html",
+    "href": "walkthroughs/OCI-LiveLab/index.html",
+    "title": "OCI LiveLab",
     "section": "",
-    "text": "Wazuh and OCI"
-  },
-  {
-    "objectID": "walkthroughs/OCI-Wazuh/index.html#what-is-wauzh",
-    "href": "walkthroughs/OCI-Wazuh/index.html#what-is-wauzh",
-    "title": "OCI Wazuh Deployment",
-    "section": "What is Wauzh?",
-    "text": "What is Wauzh?\nAs stated before, Wazuh is a SIEM solution, and is comprised of four main components:\n\nWazuh Indexer stores data and alerts which the Wazuh Server creates.\nWazuh Server serves as the analytics engine which detect threats or anomalies that are collected from endpoints.\nWazuh Dashboard visualizes alert and data from the Wazuh Server and Indexer, and highlights where agents are deployed.\nWazuh Agent(s) deploys on endpoints to forward collected data to the Wazuh Server.\n\nFurther, all four components must be running together, otherwise Wazuh will not function correctly.\nFor further visualization on how these four components work together, refer to the following diagram from Wazuh.\n\n\n\nWazuh Architecture\n\n\nIn essence, the agents forwards data from endpoints to the server which generates alerts for the indexer to store, and all of this information can be viewed ffom the dashboard."
-  },
-  {
-    "objectID": "walkthroughs/OCI-Wazuh/index.html#deploy-with-oke",
-    "href": "walkthroughs/OCI-Wazuh/index.html#deploy-with-oke",
-    "title": "OCI Wazuh Deployment",
-    "section": "Deploy with OKE",
-    "text": "Deploy with OKE\n\nConfiguring OKE Cluster\nOKE allows for two creation methods for clusters which are Quick Create or Custom Create. For this blog, we will be using Quick Create as it provisions the Virtual Cloud Network (VCN), Internet Gateway (IG), NAT Gateway (NAT), Service Gateway (SGW), Cluster, and Node Pool for us.\nWhen creating the OKE cluster through Quick Creation, we will expect similar values for the following:\n\n\n\nComponent\nNew value\n\n\n\n\nCluster\nAB-Quick-Cluster\n\n\nCluster type\nBasic\n\n\nKubernetes\nv1.36.1\n\n\nNetwork type\nOCI VCN-native\n\n\nVCN\nQuick Create-generated VCN\n\n\nVCN CIDR\n10.0.0.0/16\n\n\nPrivate API subnet\n10.0.0.0/28\n\n\nPrivate API endpoint\n10.0.0.11:6443\n\n\nWorker-node subnet\n10.0.10.0/24\n\n\nService LB subnet\n10.0.20.0/24\n\n\nKubernetes Service CIDR\n10.96.0.0/16\n\n\nNetwork Security Groups\nNone\n\n\nSecurity Lists\nThree Quick Create-generated lists\n\n\n\nDo note that our networking configuration may differ, so do take note of your given values. Additionally, you may add another subnet that allows for public addressing, and a separate security list for access.\nFor this blog, the following subnet and security list has been created in the OKE VCN for Wazuh Acess via a Compute Instance through a local forwarding SSH tunnel.\n\n\n\nComponent\nNew Value\n\n\n\n\nCompute Subnet\n10.0.30.0/24\n\n\nSecurity List\nOKE-Wazuh-Compute\n\n\nSecurity List Ingress\nSSH from 0.0.0.0/0\n\n\nSecurity List Egress\nAll to 0.0.0.0/0\n\n\n\nThese are just example values, so please ensure the values match your environment.\n\n\nConfiguring Wazuh for the Cluster\nThere are multiple methods on accessing the private OKE cluster to configure Wazuh which includes OCI Bastion Service, OCI Shell, or via a Compute Instance. For now, we will be configuring Wazuh via a Compute Instance is on the same VCN as the OKE cluster and can access its nodes. Moreover, the instance must be publically accessible via SSH at the minimum.\nFor now, I have created a simple Oracle Linux 9 Instance that it on the 10.0.30.0/24 subnet. Once, the instance is the instance is running SSH into it.\nssh -i &lt;ssh-key&gt; opc@&lt;public address of the instance&gt;\nAfterwards, install the OCI CLI.\nNext, we will be configuring the kubeconfig for our private endpoint. You may need to configure the OCI-CLI config file, and the guide can be found here.\nmkdir -p \"$HOME/.kube\"\n\noci ce cluster create-kubeconfig \\\n  --cluster-id &lt;YOUR-OKE-CLUSTER_OCID&gt; \\\n  --file \"$HOME/.kube/config\" \\\n  --region us-ashburn-1 \\\n  --token-version 2.0.0 \\\n  --kube-endpoint PRIVATE_ENDPOINT\nAdditionally, we will need to install Kubectl onto our instance which can be found at the oracle cloud native environment guide and the install kubectl guide."
+    "text": "SSH Keys\ncd .ssh\nssh-keygen -b 2048 -t rsa -f &lt;&lt;sshkeyname&gt;&gt;\n\n\nIAM\n\nCreated a compartment named “demo”\nCrated a domain within demo called “LiveLab”\nCreated a group within that domain called “oci-group”\ncreate user “TestUser” to be part of “oci-group”\n\n\n\nVCN\n\nCreated a VCN through wizard called “OCI_HOL_VCN”\n\n\nIP RANGE: 10.0.0.0/16, Public 10.0.1.0/24, Private 10.0.2.0/24\n\n\nCreated a Security group that allows SSH and TCP Traffic\n\n\n\nCOMPUTE\n\nCreated a Compute Instance\nUpdated Yum and installed HTTP\nConfigured Apache\n\nsudo yum install httpd -y\nsudo apachectl start\nsudo systemctl enable httpd\nsudo apachectl configtest\nsudo firewall-cmd --permanent --zone=public --add-service=http\nsudo firewall-cmd --reload\nsudo bash -c 'echo This is my Web-Server running on Oracle Cloud Infrastructure &gt;&gt; /var/www/html/index.html'\n\nSG already allowed TCP\n\n\n\nBlock Volume\n\nblock volume is created\nattached to instance\nRun iSCSI commands\nmount drive\n\nls -l /dev/oracleoci/oraclevd*\nsudo mkfs -t ext4 /dev/oracleoci/oraclevdb\nsudo mkdir /mnt/disk1\nsudo mount /dev/oracleoci/oraclevdb /mnt/disk1\ndf -h\n\n\nObject Storage\n\ncreated object storage\nuploaded file\nlink: link"
   },
   {
     "objectID": "projects/OCI-Puppet/index.html",
@@ -84,6 +63,13 @@
     "text": "Certifcate Management\nOn the Puppet Server Node, do the following:\n\nList Pending and Available Certificates\n\nsudo /usr/bin/puppetserver ca list --all    \n\nSign those certs\n\nsudo /usr/bin/puppetserver ca sign --all"
   },
   {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "Disclaimer\nThe views expressed on this blog are my own and do not reflect the views of the company(ies) I work (or have worked for) neither Oracle Corporation. The opinions expressed by visitors on this blog are theirs, not mine.\nThe information in this blog is written based on personal experiences. You are free to use the information on this blog but I am not responsible and will not compensate to you if you ever happen to suffer a loss/inconvenience/damage because of/while making use of this information."
+  },
+  {
     "objectID": "projects/index.html",
     "href": "projects/index.html",
     "title": "Projects",
@@ -91,11 +77,32 @@
     "text": "Date\n\n\n\nTitle\n\n\n\nAuthor\n\n\n\n\n\n\n\n\nFeb 17, 2025\n\n\nOCI Puppet LAMP Stack\n\n\n \n\n\n\n\n\n\nNo matching items"
   },
   {
-    "objectID": "walkthroughs/OCI-LiveLab/index.html",
-    "href": "walkthroughs/OCI-LiveLab/index.html",
-    "title": "OCI LiveLab",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "AB Paxtor Garcia",
     "section": "",
-    "text": "SSH Keys\ncd .ssh\nssh-keygen -b 2048 -t rsa -f &lt;&lt;sshkeyname&gt;&gt;\n\n\nIAM\n\nCreated a compartment named “demo”\nCrated a domain within demo called “LiveLab”\nCreated a group within that domain called “oci-group”\ncreate user “TestUser” to be part of “oci-group”\n\n\n\nVCN\n\nCreated a VCN through wizard called “OCI_HOL_VCN”\n\n\nIP RANGE: 10.0.0.0/16, Public 10.0.1.0/24, Private 10.0.2.0/24\n\n\nCreated a Security group that allows SSH and TCP Traffic\n\n\n\nCOMPUTE\n\nCreated a Compute Instance\nUpdated Yum and installed HTTP\nConfigured Apache\n\nsudo yum install httpd -y\nsudo apachectl start\nsudo systemctl enable httpd\nsudo apachectl configtest\nsudo firewall-cmd --permanent --zone=public --add-service=http\nsudo firewall-cmd --reload\nsudo bash -c 'echo This is my Web-Server running on Oracle Cloud Infrastructure &gt;&gt; /var/www/html/index.html'\n\nSG already allowed TCP\n\n\n\nBlock Volume\n\nblock volume is created\nattached to instance\nRun iSCSI commands\nmount drive\n\nls -l /dev/oracleoci/oraclevd*\nsudo mkfs -t ext4 /dev/oracleoci/oraclevdb\nsudo mkdir /mnt/disk1\nsudo mount /dev/oracleoci/oraclevdb /mnt/disk1\ndf -h\n\n\nObject Storage\n\ncreated object storage\nuploaded file\nlink: link"
+    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+  },
+  {
+    "objectID": "walkthroughs/OCI-Wazuh/index.html",
+    "href": "walkthroughs/OCI-Wazuh/index.html",
+    "title": "OCI Wazuh Deployment",
+    "section": "",
+    "text": "Wazuh and OCI"
+  },
+  {
+    "objectID": "walkthroughs/OCI-Wazuh/index.html#what-is-wauzh",
+    "href": "walkthroughs/OCI-Wazuh/index.html#what-is-wauzh",
+    "title": "OCI Wazuh Deployment",
+    "section": "What is Wauzh?",
+    "text": "What is Wauzh?\nAs stated before, Wazuh is a SIEM solution, and is comprised of four main components:\n\nWazuh Indexer stores data and alerts which the Wazuh Server creates.\nWazuh Server serves as the analytics engine which detect threats or anomalies that are collected from endpoints.\nWazuh Dashboard visualizes alert and data from the Wazuh Server and Indexer, and highlights where agents are deployed.\nWazuh Agent(s) deploys on endpoints to forward collected data to the Wazuh Server.\n\nFurther, all four components must be running together, otherwise Wazuh will not function correctly.\nFor further visualization on how these four components work together, refer to the following diagram from Wazuh.\n\n\n\nWazuh Architecture\n\n\nIn essence, the agents forwards data from endpoints to the server which generates alerts for the indexer to store, and all of this information can be viewed ffom the dashboard."
+  },
+  {
+    "objectID": "walkthroughs/OCI-Wazuh/index.html#deploy-with-oke",
+    "href": "walkthroughs/OCI-Wazuh/index.html#deploy-with-oke",
+    "title": "OCI Wazuh Deployment",
+    "section": "Deploy with OKE",
+    "text": "Deploy with OKE\n\nConfiguring OKE Cluster\nOKE allows for two creation methods for clusters which are Quick Create or Custom Create. For this blog, we will be using Quick Create as it provisions the Virtual Cloud Network (VCN), Internet Gateway (IG), NAT Gateway (NAT), Service Gateway (SGW), Cluster, and Node Pool for us.\nWhen creating the OKE cluster through Quick Creation, we will expect similar values for the following:\n\n\n\nComponent\nNew value\n\n\n\n\nCluster\nAB-Quick-Cluster\n\n\nCluster type\nBasic\n\n\nKubernetes\nv1.36.1\n\n\nNetwork type\nOCI VCN-native\n\n\nVCN\nQuick Create-generated VCN\n\n\nVCN CIDR\n10.0.0.0/16\n\n\nPrivate API subnet\n10.0.0.0/28\n\n\nPrivate API endpoint\n10.0.0.11:6443\n\n\nWorker-node subnet\n10.0.10.0/24\n\n\nService LB subnet\n10.0.20.0/24\n\n\nKubernetes Service CIDR\n10.96.0.0/16\n\n\nNetwork Security Groups\nNone\n\n\nSecurity Lists\nThree Quick Create-generated lists\n\n\nNode Count\n2\n\n\nNode Shape\nVM.Standard.E5.Flex\n\n\nNumber of OCPUs\n2 (minimum)\n\n\nMemory (GB)\n8 (Minimum)\n\n\nNode Image\nOracle Linux 8\n\n\n\nDo note that our networking configuration may differ, so do take note of your given values. Additionally, you may add another subnet that allows for public addressing, and a separate security list for access.\nFor this blog, the following subnet and security list has been created in the OKE VCN for Wazuh Acess via a Compute Instance through a local forwarding SSH tunnel.\n\n\n\nComponent\nNew Value\n\n\n\n\nCompute Subnet\n10.0.30.0/24\n\n\nSecurity List\nOKE-Wazuh-Compute\n\n\nSecurity List Ingress\nSSH from 0.0.0.0/0\n\n\nSecurity List Egress\nAll to 0.0.0.0/0\n\n\n\nThese are just example values, so please ensure the values match your environment.\n\n\nConfiguring Wazuh for the Cluster\nThere are multiple methods on accessing the private OKE cluster to configure Wazuh which includes OCI Bastion Service, OCI Shell, or via a Compute Instance. For now, we will be configuring Wazuh via a Compute Instance is on the same VCN as the OKE cluster and can access its nodes. Moreover, the instance must be publically accessible via SSH at the minimum.\nFor now, I have created a simple Oracle Linux 9 Instance that it on the 10.0.30.0/24 subnet. Once, the instance is the instance is running SSH into it.\nssh -i &lt;ssh-key&gt; opc@&lt;public address of the instance&gt;\nAfterwards, install the OCI CLI.\nNext, we will be configuring the kubeconfig for our private endpoint. You may need to configure the OCI-CLI config file, and the guide can be found here.\nmkdir -p \"$HOME/.kube\"\n\noci ce cluster create-kubeconfig \\\n  --cluster-id &lt;YOUR-OKE-CLUSTER_OCID&gt; \\\n  --file \"$HOME/.kube/config\" \\\n  --region us-ashburn-1 \\\n  --token-version 2.0.0 \\\n  --kube-endpoint PRIVATE_ENDPOINT\nAdditionally, we will need to install Kubectl onto our instance which can be found at the oracle cloud native environment guide and the install kubectl guide."
   },
   {
     "objectID": "walkthroughs/CSUN-GP/CSUN_GP_VPN.html",
@@ -117,12 +124,5 @@
     "title": "CSUN Global Protect",
     "section": "Windows",
     "text": "Windows\n\nI am on windows\n\n\nopen the app\n\n\n\n\nGlobal Protect Icon\n\n\n\nopen the minize apps on your task, and click the small icon\n\n\n\n\nGlobal Protect Minimized\n\n\n\nuse the following domain vpn.csun.edu\n\n\n\n\nCSUN GP Portal\n\n\n\nlog into your portal\n\n\n\n\nCSUN Portal Login\n\n\n\nyou are now connected\n\n\n\n\nConnected"
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "Disclaimer\nThe views expressed on this blog are my own and do not reflect the views of the company(ies) I work (or have worked for) neither Oracle Corporation. The opinions expressed by visitors on this blog are theirs, not mine.\nThe information in this blog is written based on personal experiences. You are free to use the information on this blog but I am not responsible and will not compensate to you if you ever happen to suffer a loss/inconvenience/damage because of/while making use of this information."
   }
 ]
