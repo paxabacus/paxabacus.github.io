@@ -347,7 +347,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#validate-and-deploy-wazuh" id="toc-validate-and-deploy-wazuh" class="nav-link" data-scroll-target="#validate-and-deploy-wazuh">Validate and Deploy Wazuh</a></li>
   </ul></li>
   </ul></li>
-  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   </ul>
 </nav>
     </div>
@@ -677,18 +677,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-i</span> <span class="op">&lt;</span>ssh-key<span class="op">&gt;</span> -N <span class="at">-T</span> <span class="at">-o</span> ExitOnForwardFailure=yes <span class="dt">\</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-L</span> 127.0.0.1:8443:<span class="op">&lt;</span>dashboard-private-ip<span class="op">&gt;</span>:443 <span class="dt">\</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  opc@<span class="op">&lt;</span>jumpbox-public-ip<span class="op">&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>And now on your workstation’s browser, open <code>https://localhost:8443</code> Since the certificate is self-signed, there will be a warning. However, proceeding pass the warning will open the Wazuh Dashboard</p>
 <p>To get the password of Wazuh, use the following within the jumpbox:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">kubectl</span> get secret indexer-cred <span class="at">-n</span> wazuh <span class="dt">\</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-o</span> jsonpath=<span class="st">'{.data.username}'</span> <span class="kw">|</span> <span class="fu">base64</span> <span class="at">--decode</span><span class="kw">;</span> <span class="bu">echo</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="ex">kubectl</span> get secret indexer-cred <span class="at">-n</span> wazuh <span class="dt">\</span></span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">-o</span> jsonpath=<span class="st">'{.data.password}'</span> <span class="kw">|</span> <span class="fu">base64</span> <span class="at">--decode</span><span class="kw">;</span> <span class="bu">echo</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>And now on your workstation’s browser, open <code>https://localhost:8443</code> Since the certificate is self-signed, there will be a warning. However, proceeding pass the warning will open the Wazuh Dashboard.</p>
+<p>Note: The Wazuh Dashboard may take a moment to be fully ready.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/wazuh-login.png" class="img-fluid figure-img"></p>
+<figcaption>Wazuh Login</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./images/wazuh-dashboard.png" class="img-fluid figure-img"></p>
+<figcaption>Wazuh Dashboard</figcaption>
+</figure>
+</div>
 </section>
 </section>
 </section>
-<section id="summary" class="level1">
-<h1>Summary</h1>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>Wazuh is now fully runnign on OCI OKE via private load balancers, and can be used as a SIEM for the tenancy.</p>
 
 
 </section>
