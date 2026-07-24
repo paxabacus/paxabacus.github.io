@@ -573,10 +573,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="updating-the-docker-images-in-the-deployment-files" class="level4">
 <h4 class="anchored" data-anchor-id="updating-the-docker-images-in-the-deployment-files">Updating the docker images in the deployment files</h4>
 <p>The following files located in the <code>wazuh-kubernetes</code> repo need to have the image value updated.</p>
-<pre><code>wazuh/indexer_stack/wazuh-dashboard/dashboard-deploy.yaml
-wazuh/indexer_stack/wazuh-indexer/cluster/indexer-sts.yaml
-wazuh/wazuh_managers/wazuh-master-sts.yaml
-wazuh/wazuh_managers/wazuh-workers-sts.yaml</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">wazuh/indexer_stack/wazuh-dashboard/dashboard-deploy.yaml</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">wazuh/indexer_stack/wazuh-indexer/cluster/indexer-sts.yaml</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">wazuh/wazuh_managers/wazuh-master-sts.yaml</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">wazuh/wazuh_managers/wazuh-workers-sts.yaml</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Within each yaml the image value will be formated as the following <code>wazuh/&lt;service&gt;</code>, please update it to <code>docker.io/wazuh/&lt;service&gt;</code>. This is done to avoid CRI-O name errors.</p>
 <p>For example, in <code>wazuh/indexer_stack/wazuh-dashboard/dashboard-deploy.yaml</code></p>
 <p>The image value is <code>wazuh/wazuh-dashboard:4.14.6</code>, so simply update the value to be <code>docker.io/wazuh/wazuh-dsashboard:4.14.6</code>. And do this to each of the previously mentioned files.</p>
@@ -584,64 +584,64 @@ wazuh/wazuh_managers/wazuh-workers-sts.yaml</code></pre>
 <section id="updating-service-manifests-in-wazuh-to-use-private-oci-load-balancers." class="level4">
 <h4 class="anchored" data-anchor-id="updating-service-manifests-in-wazuh-to-use-private-oci-load-balancers.">Updating Service Manifests in Wazuh to use Private OCI Load Balancers.</h4>
 <p>The default manifest values are not tailored for OCI, so we must update them. And the files for which need to be updated are the following</p>
-<pre><code>wazuh/indexer_stack/wazuh-dashboard/dashboard-svc.yaml
-wazuh/indexer_stack/wazuh-indexer/cluster/indexer-api-svc.yaml
-wazuh/wazuh_managers/wazuh-master-svc.yaml
-wazuh/wazuh_managers/wazuh-workers-svc.yaml  </code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">wazuh/indexer_stack/wazuh-dashboard/dashboard-svc.yaml</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">wazuh/indexer_stack/wazuh-indexer/cluster/indexer-api-svc.yaml</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">wazuh/wazuh_managers/wazuh-master-svc.yaml</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">wazuh/wazuh_managers/wazuh-workers-svc.yaml</span>  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>For <code>dashboard-svc.yaml</code>, we will commend out non-OCI statements and add <code>service.beta.kubernetes.io/oci-load-balancer-internal: "true"</code> within the <code>annotations</code> section.</p>
 <p>The yaml file will appear similar to the following:</p>
-<pre><code># Copyright (C) 2019, Wazuh Inc.
-#
-# This program is a free software; you can redistribute it
-# and/or modify it under the terms of the GNU General Public
-# License (version 2) as published by the FSF - Free Software
-# Foundation.
-
-# Dashboard service
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: dashboard
-  namespace: wazuh
-  labels:
-    app: wazuh-dashboard
-  annotations:
-    service.beta.kubernetes.io/oci-load-balancer-internal: "true"
-spec:
-  type: LoadBalancer
-  selector:
-    app: wazuh-dashboard
-  ports:
-    - name: dashboard
-      port: 443
-      targetPort: 5601  </code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Copyright (C) 2019, Wazuh Inc.</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># This program is a free software; you can redistribute it</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># and/or modify it under the terms of the GNU General Public</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># License (version 2) as published by the FSF - Free Software</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Foundation.</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Dashboard service</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> v1</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Service</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> dashboard</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">namespace</span><span class="kw">:</span><span class="at"> wazuh</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">labels</span><span class="kw">:</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">app</span><span class="kw">:</span><span class="at"> wazuh-dashboard</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">annotations</span><span class="kw">:</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">service.beta.kubernetes.io/oci-load-balancer-internal</span><span class="kw">:</span><span class="at"> </span><span class="st">"true"</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> LoadBalancer</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">selector</span><span class="kw">:</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">app</span><span class="kw">:</span><span class="at"> wazuh-dashboard</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> dashboard</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">port</span><span class="kw">:</span><span class="at"> </span><span class="dv">443</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">targetPort</span><span class="kw">:</span><span class="at"> </span><span class="dv">5601</span><span class="at">  </span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>For <code>wazuh-master-svc.yaml</code> and <code>wazuh-workers-svc.yaml</code>, the <code>annotations</code> section to be the same as the example above.</p>
 <p>Lastly, <code>indexer-api-svc.yaml</code> will have the <code>type</code> variable updated to <code>type: ClusterIP</code> as shown in the following example.</p>
-<pre><code># Copyright (C) 2019, Wazuh Inc.
-#
-# This program is a free software; you can redistribute it
-# and/or modify it under the terms of the GNU General Public
-# License (version 2) as published by the FSF - Free Software
-# Foundation.
-
-# Indexer service: API
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: indexer
-  namespace: wazuh
-  labels:
-    app: wazuh-indexer
-spec:
-  type: ClusterIP
-  selector:
-    app: wazuh-indexer
-  ports:
-    - name: indexer-rest
-      port: 9200
-      targetPort: 9200</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Copyright (C) 2019, Wazuh Inc.</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># This program is a free software; you can redistribute it</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># and/or modify it under the terms of the GNU General Public</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># License (version 2) as published by the FSF - Free Software</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Foundation.</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Indexer service: API</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">apiVersion</span><span class="kw">:</span><span class="at"> v1</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">kind</span><span class="kw">:</span><span class="at"> Service</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="fu">metadata</span><span class="kw">:</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">name</span><span class="kw">:</span><span class="at"> indexer</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">namespace</span><span class="kw">:</span><span class="at"> wazuh</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">labels</span><span class="kw">:</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">app</span><span class="kw">:</span><span class="at"> wazuh-indexer</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="fu">spec</span><span class="kw">:</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> ClusterIP</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">selector</span><span class="kw">:</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">app</span><span class="kw">:</span><span class="at"> wazuh-indexer</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> indexer-rest</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">port</span><span class="kw">:</span><span class="at"> </span><span class="dv">9200</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">targetPort</span><span class="kw">:</span><span class="at"> </span><span class="dv">9200</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
 <section id="validate-and-deploy-wazuh" class="level3">
