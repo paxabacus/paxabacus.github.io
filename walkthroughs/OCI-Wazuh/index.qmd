@@ -294,8 +294,6 @@ ssh -i <ssh-key> -N -T -o ExitOnForwardFailure=yes \
   opc@<jumpbox-public-ip>
 ```
 
-And now on your workstation's browser, open `https://localhost:8443` Since the certificate is self-signed, there will be a warning. However, proceeding pass the warning will open the Wazuh Dashboard
-
 
 
 To get the password of Wazuh, use the following within the jumpbox:
@@ -308,7 +306,19 @@ kubectl get secret indexer-cred -n wazuh \
   -o jsonpath='{.data.password}' | base64 --decode; echo
 ```
 
+And now on your workstation's browser, open `https://localhost:8443` Since the certificate is self-signed, there will be a warning. However, proceeding pass the warning will open the Wazuh Dashboard.
+
+Note: The Wazuh Dashboard may take a moment to be fully ready.
+
+![Wazuh Login](./images/wazuh-login.png)
 
 
-# Summary
+![Wazuh Dashboard](./images/wazuh-dashboard.png)
+
+
+# Conclusion
+
+Wazuh is now fully runnign on OCI OKE via private load balancers, and can be used as a SIEM for the tenancy.
+
+
 
