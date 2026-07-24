@@ -76,7 +76,11 @@ When creating the OKE cluster through Quick Creation, we will expect similar val
 | Kubernetes Service CIDR | `10.96.0.0/16` |
 | Network Security Groups | None |
 | Security Lists | Three Quick Create-generated lists |
-
+| Node Count | 2 |
+| Node Shape | VM.Standard.E5.Flex|
+| Number of OCPUs | 2 (minimum) |
+| Memory (GB) | 8 (Minimum) |
+| Node Image | Oracle Linux 8 | 
 
 Do note that our networking configuration may differ, so do take note of your given values. Additionally, you may add another subnet that allows for public addressing, and a separate security list for access.
 
