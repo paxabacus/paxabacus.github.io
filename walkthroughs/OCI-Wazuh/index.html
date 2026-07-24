@@ -557,7 +557,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="configuring-wazuh-for-the-cluster" class="level3">
 <h3 class="anchored" data-anchor-id="configuring-wazuh-for-the-cluster">Configuring Wazuh for the Cluster</h3>
 <p>There are multiple methods on accessing the private OKE cluster to configure Wazuh which includes OCI Bastion Service, OCI Shell, or via a Compute Instance. We will be configuring Wazuh via a Compute Instance is on the same VCN as the OKE cluster and can access its nodes.</p>
-<p>For now, I have created a simple Oracle Linux 8 Instance that is on the <code>10.0.30.0/24</code> subnet to serve as our jumpbox. Once, the instance is the instance is running SSH into it.</p>
+<p>For now, I have created a simple Oracle Linux 9 Instance that is on the <code>10.0.30.0/24</code> subnet to serve as our jumpbox. Once, the instance is the instance is running SSH into it.</p>
 <p><code>ssh -i &lt;ssh-key&gt; opc@&lt;public address of the instance&gt;</code></p>
 <p>Afterwards, <a href="https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/cliinstall.htm#InstallingCLI__oraclelinux9">install the OCI CLI</a>.</p>
 <p>Next, we will be configuring the kubeconfig for our private endpoint. You may need to configure the OCI-CLI config file, and the guide can be found <a href="https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/cliinstall.htm#configfile">here.</a></p>
@@ -570,7 +570,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">--token-version</span> 2.0.0 <span class="dt">\</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">--kube-endpoint</span> PRIVATE_ENDPOINT</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Additionally, we will need to install <code>Kubectl</code> onto our instance which can be found at the <a href="https://docs.oracle.com/en/operating-systems/olcne/1.8/install/prereq.html#repo">oracle cloud native environment guide</a> and the <a href="https://docs.oracle.com/en/operating-systems/olcne/2/upgrade/kubectl_install_task.html">install kubectl</a> guide.</p>
-<p>Then, we can clone the <code>Wazuh-Kubernetes</code> repository onto the jumpbox.</p>
+<p>Then, we can clone the <code>Wazuh-Kubernetes</code> repository onto the jumpbox. You will need to install git <code>sudo dnf install git</code>.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/wazuh/wazuh-kubernetes.git <span class="dt">\</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-b</span> v4.14.6 <span class="at">--depth</span><span class="op">=</span>1</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -586,13 +586,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">wazuh/indexer_stack/wazuh-dashboard/dashboard-deploy.yaml</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">wazuh/indexer_stack/wazuh-indexer/cluster/indexer-sts.yaml</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">wazuh/wazuh_managers/wazuh-master-sts.yaml</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">wazuh/wazuh_managers/wazuh-workers-sts.yaml</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">wazuh/wazuh_managers/wazuh-worker-sts.yaml</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Within each yaml the image value will be formated as the following <code>wazuh/&lt;service&gt;</code>, please update it to <code>docker.io/wazuh/&lt;service&gt;</code>. This is done to avoid CRI-O name errors.</p>
 <p>For example, in <code>wazuh/indexer_stack/wazuh-dashboard/dashboard-deploy.yaml</code></p>
 <p>The image value is <code>wazuh/wazuh-dashboard:4.14.6</code>, so simply update the value to be <code>docker.io/wazuh/wazuh-dsashboard:4.14.6</code>. And do this to each of the previously mentioned files.</p>
 </section>
-<section id="updating-service-manifests-in-wazuh-to-use-private-oci-load-balancers." class="level4">
-<h4 class="anchored" data-anchor-id="updating-service-manifests-in-wazuh-to-use-private-oci-load-balancers.">Updating Service Manifests in Wazuh to use Private OCI Load Balancers.</h4>
+<section id="updating-pvcs-to-use-oci-block-volume" class="level4">
+<h4 class="anchored" data-anchor-id="updating-pvcs-to-use-oci-block-volume">Updating PVCs to use OCI Block Volume</h4>
+<p>Update the following file</p>
+<p><code>envs/local-env/storage-class.yaml</code></p>
+<p>And for provisioner, remove <code>microk8s.io</code> in favor for <code>provisioner: blockvolume.csi.oraclecloud.com</code> #### Updating Service Manifests in Wazuh to use Private OCI Load Balancers.</p>
 <p>The default manifest values are not tailored for OCI, so we must update them. And the files for which need to be updated are the following</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">wazuh/indexer_stack/wazuh-dashboard/dashboard-svc.yaml</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">wazuh/indexer_stack/wazuh-indexer/cluster/indexer-api-svc.yaml</span></span>
@@ -668,7 +671,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="ex">kubectl</span> exec <span class="at">-n</span> wazuh deployment/wazuh-dashboard <span class="at">--</span> <span class="dt">\</span></span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  sh <span class="at">-c</span> <span class="st">'curl -skI https://wazuh:55000/'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>To get the private Dashboard load-balancer address:</p>
+<p>To get the private Dashboard load-balancer address, and it will be the external IP needed:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">kubectl</span> get svc dashboard <span class="at">-n</span> wazuh</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>SSH into the jumpbox, with the following parameters to establish a forward local port on 8443 to connect to the private Dashboard load balancer.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-i</span> <span class="op">&lt;</span>ssh-key<span class="op">&gt;</span> -N <span class="at">-T</span> <span class="at">-o</span> ExitOnForwardFailure=yes <span class="dt">\</span></span>
