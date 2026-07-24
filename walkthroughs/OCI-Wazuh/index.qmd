@@ -105,7 +105,7 @@ These are just example values, so please ensure the values match your environmen
 
 There are multiple methods on accessing the private OKE cluster to configure Wazuh which includes OCI Bastion Service, OCI Shell, or via a Compute Instance. We will be configuring Wazuh via a Compute Instance is on the same VCN as the OKE cluster and can access its nodes.
 
-For now, I have created a simple Oracle Linux 8 Instance that is on the `10.0.30.0/24` subnet to serve as our jumpbox. Once, the instance is the instance is running SSH into it.
+For now, I have created a simple Oracle Linux 9 Instance that is on the `10.0.30.0/24` subnet to serve as our jumpbox. Once, the instance is the instance is running SSH into it.
 
 `ssh -i <ssh-key> opc@<public address of the instance>`
 
@@ -130,7 +130,7 @@ Additionally, we will need to install `Kubectl` onto our instance which can be f
 
 
 
-Then, we can clone the `Wazuh-Kubernetes` repository onto the jumpbox.
+Then, we can clone the `Wazuh-Kubernetes` repository onto the jumpbox. You will need to install git `sudo dnf install git`.
 
 ```bash
 git clone https://github.com/wazuh/wazuh-kubernetes.git \
@@ -158,7 +158,7 @@ The following files located in the `wazuh-kubernetes` repo need to have the imag
 wazuh/indexer_stack/wazuh-dashboard/dashboard-deploy.yaml
 wazuh/indexer_stack/wazuh-indexer/cluster/indexer-sts.yaml
 wazuh/wazuh_managers/wazuh-master-sts.yaml
-wazuh/wazuh_managers/wazuh-workers-sts.yaml
+wazuh/wazuh_managers/wazuh-worker-sts.yaml
 ````
 
 Within each yaml the image value will be formated as the following `wazuh/<service>`, please update it to `docker.io/wazuh/<service>`. This is done to avoid CRI-O name errors.
@@ -167,8 +167,14 @@ For example, in `wazuh/indexer_stack/wazuh-dashboard/dashboard-deploy.yaml`
 
 The image value is `wazuh/wazuh-dashboard:4.14.6`, so simply update the value to be `docker.io/wazuh/wazuh-dsashboard:4.14.6`. And do this to each of the previously mentioned files.
 
+#### Updating PVCs to use OCI Block Volume
 
 
+Update the following file
+
+`envs/local-env/storage-class.yaml`
+
+And for provisioner, remove `microk8s.io` in favor for `provisioner: blockvolume.csi.oraclecloud.com`
 #### Updating Service Manifests in Wazuh to use Private OCI Load Balancers.
 
 The default manifest values are not tailored for OCI, so we must update them. And the files for which need to be updated are the following
@@ -273,7 +279,7 @@ kubectl exec -n wazuh deployment/wazuh-dashboard -- \
   sh -c 'curl -skI https://wazuh:55000/'
 ```
 
-To get the private Dashboard load-balancer address:
+To get the private Dashboard load-balancer address, and it will be the external IP needed:
 
 ```bash
 kubectl get svc dashboard -n wazuh
