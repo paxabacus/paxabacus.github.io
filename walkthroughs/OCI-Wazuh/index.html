@@ -658,6 +658,19 @@ spec:
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="ex">kubectl</span> exec <span class="at">-n</span> wazuh deployment/wazuh-dashboard <span class="at">--</span> <span class="dt">\</span></span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  sh <span class="at">-c</span> <span class="st">'curl -skI https://wazuh:55000/'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>To get the private Dashboard load-balancer address:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">kubectl</span> get svc dashboard <span class="at">-n</span> wazuh</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>SSH into the jumpbox, with the following parameters to establish a forward local port on 8443 to connect to the private Dashboard load balancer.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> <span class="at">-i</span> <span class="op">&lt;</span>ssh-key<span class="op">&gt;</span> -N <span class="at">-T</span> <span class="at">-o</span> ExitOnForwardFailure=yes <span class="dt">\</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-L</span> 127.0.0.1:8443:<span class="op">&lt;</span>dashboard-private-ip<span class="op">&gt;</span>:443 <span class="dt">\</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  opc@<span class="op">&lt;</span>jumpbox-public-ip<span class="op">&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>And now on your workstation’s browser, open <code>https://localhost:8443</code> Since the certificate is self-signed, there will be a warning. However, proceeding pass the warning will open the Wazuh Dashboard</p>
+<p>To get the password of Wazuh, use the following within the jumpbox:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">kubectl</span> get secret indexer-cred <span class="at">-n</span> wazuh <span class="dt">\</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-o</span> jsonpath=<span class="st">'{.data.username}'</span> <span class="kw">|</span> <span class="fu">base64</span> <span class="at">--decode</span><span class="kw">;</span> <span class="bu">echo</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="ex">kubectl</span> get secret indexer-cred <span class="at">-n</span> wazuh <span class="dt">\</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">-o</span> jsonpath=<span class="st">'{.data.password}'</span> <span class="kw">|</span> <span class="fu">base64</span> <span class="at">--decode</span><span class="kw">;</span> <span class="bu">echo</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
 </section>
