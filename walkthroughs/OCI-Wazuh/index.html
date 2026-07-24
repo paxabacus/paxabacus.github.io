@@ -347,8 +347,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#validate-and-deploy-wazuh" id="toc-validate-and-deploy-wazuh" class="nav-link" data-scroll-target="#validate-and-deploy-wazuh">Validate and Deploy Wazuh</a></li>
   </ul></li>
   </ul></li>
-  <li><a href="#leveraging-agents" id="toc-leveraging-agents" class="nav-link" data-scroll-target="#leveraging-agents">Leveraging Agents</a></li>
-  <li><a href="#oci-logs-into-wazuh" id="toc-oci-logs-into-wazuh" class="nav-link" data-scroll-target="#oci-logs-into-wazuh">OCI Logs into Wazuh</a></li>
   <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
   </ul>
 </nav>
@@ -393,7 +391,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
-<p>The following post aims to assist in the deployment of <a href="https://documentation.wazuh.com/current/getting-started/index.html">Wazuh</a> as a centralized Security Information and Event Magament (SIEM) for Oracle Cloud Infrastructure (OCI) via a private Oracle Kubernetes Engine (OKE) cluster. Additionally, we will discuss on how to enroll compute instances and import OCI logs into the SIEM.</p>
+<p>The following post aims to assist in the deployment of <a href="https://documentation.wazuh.com/current/getting-started/index.html">Wazuh</a> as a centralized Security Information and Event Magament (SIEM) for Oracle Cloud Infrastructure (OCI) via a private Oracle Kubernetes Engine (OKE) cluster.</p>
 <p>Through this blog, we will have accomplished the following tasks:</p>
 <ul>
 <li>Created a private OKE Cluster</li>
@@ -404,7 +402,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <section id="what-is-wauzh" class="level2">
 <h2 class="anchored" data-anchor-id="what-is-wauzh">What is Wauzh?</h2>
-<p>As stated before, <a href="https://documentation.wazuh.com/current/getting-started/index.html">Wazuh</a> is a SIEM solution, and is comprised of four main components:</p>
+<p>As stated before, Wazuh is a SIEM solution, and is comprised of four main components:</p>
 <ul>
 <li><a href="https://documentation.wazuh.com/current/installation-guide/wazuh-indexer/index.html">Wazuh Indexer</a> stores data and alerts which the Wazuh Server creates.</li>
 <li><a href="https://documentation.wazuh.com/current/installation-guide/wazuh-server/index.html">Wazuh Server</a> serves as the analytics engine which detect threats or anomalies that are collected from endpoints.</li>
@@ -419,7 +417,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <figcaption>Wazuh Architecture</figcaption>
 </figure>
 </div>
-<p>In essence, the agents forwards data from endpoints to the server which generates alerts for the indexer to store, and all of this information can be viewed ffom the dashboard.</p>
+<p>In essence, the agents forwards data from endpoints to the server which generates alerts for the indexer to store, and all of this information can be viewed from the dashboard.</p>
 </section>
 </section>
 <section id="deployment" class="level1">
@@ -450,72 +448,84 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td>Kubernetes</td>
-<td><code>v1.36.1</code></td>
+<td><code>v1.36</code></td>
 </tr>
 <tr class="even">
 <td>Network type</td>
 <td>OCI VCN-native</td>
 </tr>
 <tr class="odd">
+<td>Kubernetes API Endpoint</td>
+<td>Private</td>
+</tr>
+<tr class="even">
+<td>Node Type</td>
+<td>Managed</td>
+</tr>
+<tr class="odd">
+<td>Kuberenetes Worker Nodes</td>
+<td>Private</td>
+</tr>
+<tr class="even">
 <td>VCN</td>
 <td>Quick Create-generated VCN</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>VCN CIDR</td>
 <td><code>10.0.0.0/16</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Private API subnet</td>
 <td><code>10.0.0.0/28</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Private API endpoint</td>
 <td><code>10.0.0.11:6443</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Worker-node subnet</td>
 <td><code>10.0.10.0/24</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Service LB subnet</td>
 <td><code>10.0.20.0/24</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Kubernetes Service CIDR</td>
 <td><code>10.96.0.0/16</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Network Security Groups</td>
 <td>None</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Security Lists</td>
 <td>Three Quick Create-generated lists</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Node Count</td>
 <td>3</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Node Shape</td>
 <td>VM.Standard.E5.Flex</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Number of OCPUs</td>
 <td>2</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>Memory (GB)</td>
 <td>8</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Node Image</td>
 <td>Oracle Linux 8</td>
 </tr>
 </tbody>
 </table>
 <p>Do note that our networking configuration may differ, so do take note of your given values. Additionally, you may add another subnet that allows for public addressing, and a separate security list for access.</p>
-<p>For this blog, the following subnet and security list has been created in the OKE VCN for Wazuh Acess via a Compute Instance through a local forwarding SSH tunnel. This instance will be our jumpbox.</p>
+<p>For this blog, the following subnet and security list has been created in the OKE VCN for Wazuh Access via a Compute Instance through a local forwarding SSH tunnel. This instance will be our jumpbox.</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -673,12 +683,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">-o</span> jsonpath=<span class="st">'{.data.password}'</span> <span class="kw">|</span> <span class="fu">base64</span> <span class="at">--decode</span><span class="kw">;</span> <span class="bu">echo</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
-</section>
-<section id="leveraging-agents" class="level1">
-<h1>Leveraging Agents</h1>
-</section>
-<section id="oci-logs-into-wazuh" class="level1">
-<h1>OCI Logs into Wazuh</h1>
 </section>
 <section id="summary" class="level1">
 <h1>Summary</h1>
