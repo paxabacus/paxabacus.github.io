@@ -151,7 +151,7 @@ Once the certificates been generated, the values within the Kubernetes manifest 
 
 The following files located in the `wazuh-kubernetes` repo need to have the image value updated.
 
-````
+````bash
 wazuh/indexer_stack/wazuh-dashboard/dashboard-deploy.yaml
 wazuh/indexer_stack/wazuh-indexer/cluster/indexer-sts.yaml
 wazuh/wazuh_managers/wazuh-master-sts.yaml
@@ -170,7 +170,7 @@ The image value is `wazuh/wazuh-dashboard:4.14.6`, so simply update the value to
 
 The default manifest values are not tailored for OCI, so we must update them. And the files for which need to be updated are the following
 
-```
+``` bash
 wazuh/indexer_stack/wazuh-dashboard/dashboard-svc.yaml
 wazuh/indexer_stack/wazuh-indexer/cluster/indexer-api-svc.yaml
 wazuh/wazuh_managers/wazuh-master-svc.yaml
@@ -181,7 +181,7 @@ For `dashboard-svc.yaml`, we will commend out non-OCI statements and add `servic
 
 The yaml file will appear similar to the following:
 
-```
+```yaml
 # Copyright (C) 2019, Wazuh Inc.
 #
 # This program is a free software; you can redistribute it
@@ -214,7 +214,7 @@ For `wazuh-master-svc.yaml` and `wazuh-workers-svc.yaml`, the `annotations` sect
 
 Lastly, `indexer-api-svc.yaml` will have the `type` variable updated to `type: ClusterIP` as shown in the following example.
 
-```
+```yaml
 # Copyright (C) 2019, Wazuh Inc.
 #
 # This program is a free software; you can redistribute it
